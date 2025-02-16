@@ -19,11 +19,8 @@ def main():
     
     session = initialize_model()
     
-    for i in range(5):
+    while True:
         prompt = "\n".join(history) + "\nContinue l'histoire avec des réponses concises (maximum 5 phrases)."
-        
-        if i == 4:
-            prompt += "\nTermine l'histoire de manière satisfaisante en restant bref."
         
         print("\nGénération en cours...")
         story_part = generate_text(session, prompt, max_tokens=100)
@@ -31,9 +28,16 @@ def main():
         print(story_part)
         history.append(story_part)
         
-        if i < 4:
-            user_input = input("Que se passe-t-il ensuite ? ")
-            history.append("*" + user_input + "*")
+        user_input = input("Que se passe-t-il ensuite ? (Tapez '/fin' pour terminer) ")
+        if user_input.strip().lower() == "/fin":
+            print("\nFinalisation de l'histoire en cours...")
+            final_prompt = "\n".join(history) + "\nTermine l'histoire de manière satisfaisante et cohérente."
+            final_part = generate_text(session, final_prompt, max_tokens=200)
+            print("\n--- Fin de l'histoire ---\n")
+            print(final_part)
+            history.append(final_part)
+            break
+        history.append("*" + user_input + "*")
     
     # Nettoyage du texte pour ne garder que l'histoire sans les interventions de l'utilisateur et l'instruction IA
     cleaned_story = "\n".join([line for line in history if not line.startswith("*") and "générateur d'histoires" not in line])
