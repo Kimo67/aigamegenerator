@@ -1,0 +1,52 @@
+Tu es un générateur d'histoires interactives de type Visual Novel. L'utilisateur te fournit un contexte initial et tu dois générer une histoire immersive en plusieurs étapes en français en gardant un style proche des visual novel avec des dialogues entre les passages narratifs.Le héro cherche à retrouver sa famille dont il a été séparé à la naissance, il a été vendu en esclave à une riche famille
+Personnages : [Héro] - [Maître] - [Familier], le héro rencontre également [Marie], une servante de la maison qui lui est sympathique.
+  Dans les jardins fleuris de la demeure opulente où il travaille depuis sa tendre enfance, Édouard, le jeune homme esclave, trouve un ancien médaillon orné d'un rubis qui mentionne brièvement ses parents et son lieu de naissance. Intrigué, il part à leur recherche malgré les risques que cela représente pour lui.
+
+"J'ai entendu parler d'une vieille femme qui vit près du village voisin, elle sait peut-être quelque chose sur ma famille," murmura Édouard à son ami confident, un autre esclave plus âgé.
+
+Après avoir traversé la forêt dense et enjamber les ruisseaux tumultueux, Édouard arrive au village. La vieille femme aux cheveux blancs comme la neige le reçoit avec bienveillance.
+
+"Un jour, j'ai vu un bébé dans une chaloupe se faire emmener par des marchands d'esclaves," dit-elle en fronçant les sourcils. "Les parents étaient si tristes..."
+
+Édouard, le cœur serré, demande plus de détails sur son lieu de naissance et sur ce qu'il s'est passé après sa capture.
+  Personnages : Édouard - [un autre esclave plus âgé] - La vieille femme
+    Il continue de poser des questions
+    Personnages : [Il] - [La] - [Liste]
+      La vieille femme soupira profondément avant de reprendre.
+
+"Le village est à quelques lieues d'ici, près du grand chêne millénaire. Ta mère et ton père sont restés là jusqu'à ce que la faim les oblige à partir."
+
+Édouard sentit son cœur battre plus fort, plein d'espoir.
+
+"Que sont-ils devenus après ? Ont-ils réussi à échapper aux marchands d'esclaves ?"
+
+La vieille femme hocha doucement la tête, ses yeux perdus dans le vague.
+
+"Ils ont essayé plusieurs fois, mais les routes étaient dangereuses. La dernière fois que j'ai entendu parler d'eux, ils se dirigeaient vers la ville pour trouver du travail et de quoi manger."
+
+Édouard remercia la vieille femme et quitta le village, un plan naissant dans son esprit.
+      Personnages : Édouard - La vieille femme - Ta mère et ton père
+        Édouard marcha d'un pas décidé vers la ville, guidé par les informations précieuses que lui avait données la vieille femme. La perspective de retrouver sa famille ravivait en lui un sentiment d'espoir qu'il n'avait pas ressenti depuis longtemps.
+
+La cité était bruyante et animée ; une symphonie de couleurs, de parfums et de sons emplissait l'air. Édouard observa attentivement chaque visage croisé sur son chemin, cherchant des indices qui pourraient le mener vers sa famille.
+
+Après plusieurs jours d'errance dans la ville, il avait enfin trouvé un emploi comme apprenti chez un marchand de légumes prospère. Cela lui permettait de gagner suffisamment d'argent pour se nourrir et de disposer d'un toit sur la tête chaque nuit.
+
+Un soir, alors qu'il rentrait du marché avec une charrette pleine de légumes frais, Édouard aperçut un couple près des étals. Leurs traits familiers le frappèrent comme une gifle. C'étaient eux : ses parents ! 
+
+"Madame... Monsieur," dit-il d'une voix tremblante, s'approchant avec prudence.
+
+Le père de Édouard lui sourit, les yeux embués de larmes de joie. "Édouard !" lança-t-il, ému.
+
+Sa mère serra son fils dans ses bras, un sourire radieux sur le visage. "Mon cher enfant," murmura-t-elle tendrement.
+
+La famille réunie se raconta les périples qu'ils avaient tous traversés depuis leur séparation. Ils décidèrent de vivre ensemble et Édouard obtint l'autorisation de son maître d'esclave pour habiter avec sa nouvelle famille.
+
+Chaque soir, ils se retrouvaient autour du feu pour partager leurs histoires et leurs espoirs. Les rires et les pleurs s'entremêlaient dans la douceur des conversations familiales.
+
+Quelques mois plus tard, Édouard décida de quitter son emploi chez le marchand pour suivre un apprentissage auprès d'un artisan reconnu. Son père l'aida à négocier avec son maître d'esclave et Édouard put se consacrer pleinement à sa nouvelle vie.
+
+La famille était maintenant prospère et heureuse. Chaque jour, ils célébraient la chance de pouvoir vivre ensemble et de surmonter les obstacles qui s'étaient dressés sur leur chemin.
+
+Le rubis dans le médaillon que Édouard avait trouvé dans les jardins était toujours autour de son cou. Il était un symbole précieux d'une époque passée mais aussi une promesse d'un avenir radieux pour sa famille réunie.
+        Personnages : Édouard - père d'Édouard - mère d'Édouard
