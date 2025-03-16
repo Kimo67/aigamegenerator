@@ -5,9 +5,9 @@ import tkinter as tk
 
 # Paramètres de mise en page et style
 horizontal_spacing = 200   # espace horizontal entre les feuilles
-vertical_spacing = 100     # espace vertical entre les niveaux
-node_width = 140
-node_height = 50
+vertical_spacing = 120     # espace vertical entre les niveaux
+node_width = 400           # on élargit le nœud
+node_height = 100          # on augmente la hauteur du nœud
 
 def create_rounded_rectangle(canvas, x1, y1, x2, y2, radius=10, **kwargs):
     """
@@ -39,7 +39,7 @@ class StoryNode:
     
     def extract_characters(self, text, session):
         prompt = (
-            f"Donne moi le nom des personnages qui parlent explicitement présents dans ce bout d'histoire :\n"
+            "Donne moi le nom des personnages qui parlent explicitement présents dans ce bout d'histoire :\n"
             f"{text}\n\n"
             "La liste des personnages doit être ainsi : [NOM] - [NOM] - [NOM], n'envoie que la liste de noms."
         )
@@ -72,9 +72,9 @@ def compute_tree_positions(node, depth=0):
     """
     if not hasattr(compute_tree_positions, "counter"):
         compute_tree_positions.counter = 0
-    node.y = depth * vertical_spacing + 50
+    node.y = depth * vertical_spacing + 60
     if not node.children:
-        node.x = compute_tree_positions.counter * horizontal_spacing + node_width//2 + 20
+        node.x = compute_tree_positions.counter * horizontal_spacing + node_width//2 + 50
         compute_tree_positions.counter += 1
     else:
         for child in node.children:
@@ -98,17 +98,28 @@ def update_tree_visualization(tree_root, canvas):
         x1 = x + node_width/2
         y1 = y + node_height/2
         
-        # Dessin du rectangle arrondi
-        create_rounded_rectangle(canvas, x0, y0, x1, y1, radius=10,
-                                 fill="lightyellow", outline="black", width=2)
+        # Dessin du rectangle arrondi (fond jaune clair, texte noir)
+        create_rounded_rectangle(
+            canvas, x0, y0, x1, y1, radius=10,
+            fill="lightyellow", outline="black", width=2
+        )
         
-        # Affichage d'un extrait du texte (limité à 30 caractères)
+        # Affichage d'un extrait du texte (jusqu’à 150 caractères) en noir
         display_text = node.text.strip().replace("\n", " ")
-        if len(display_text) > 30:
-            display_text = display_text[:30] + "..."
-        canvas.create_text(x, y, text=display_text, font=("Helvetica", 10), width=node_width-10)
+        max_chars = 150
+        if len(display_text) > max_chars:
+            display_text = display_text[:max_chars] + "..."
         
-        # Liaisons avec les enfants (ligne lisse entre le bas du parent et le haut de l'enfant)
+        canvas.create_text(
+            x, y,
+            text=display_text,
+            fill="black",               
+            font=("Helvetica", 10),
+            width=node_width - 20,      
+            anchor="center"
+        )
+        
+        # Liaisons avec les enfants
         for child in node.children:
             parent_bottom = (x, y + node_height/2)
             child_top = (child.x, child.y - node_height/2)
@@ -144,42 +155,46 @@ def main():
     # Création de la fenêtre graphique
     viz_window = tk.Tk()
     viz_window.title("Arbre de l'histoire")
-    canvas = tk.Canvas(viz_window, width=1200, height=800, bg="white")
+    canvas = tk.Canvas(viz_window, width=1400, height=900, bg="white")
     canvas.pack(side="left", fill="both", expand=True)
     
     print("Bienvenue dans le générateur d'histoires interactives !")
     context = input("Entrez une phrase de départ décrivant le contexte de votre histoire : ")
     
     session = initialize_model()
+    
+    # Prépare l'instruction pour la première génération
+    # (On ne met pas le 'context' dans l'arbre, on l'utilise juste pour la 1re génération)
     context_with_instruction = (
         "Tu es un générateur d'histoires interactives de type Visual Novel. "
         "L'utilisateur te fournit un contexte initial et tu dois générer une histoire immersive en plusieurs étapes en français "
-        "en gardant un style proche des visual novel avec des dialogues entre les passages narratifs. " + context
+        "en gardant un style proche des visual novel avec des dialogues entre les passages narratifs. "
+        "N'envoie que l'histoire et rien d'autre"
+        + context
     )
-    root_story = StoryNode(context_with_instruction, session=session)
+    
+    # Génére immédiatement une introduction depuis ce contexte
+    print("\nGénération de l'introduction de l'histoire...")
+    intro_part = generate_text(session, context_with_instruction, max_tokens=75)
+    print("\n--- Introduction de l'histoire ---\n")
+    print(intro_part)
+    
+    # On crée le noeud racine uniquement avec le texte généré (pas le contexte utilisateur)
+    root_story = StoryNode(intro_part, session=session)
     current_node = root_story
     
+    # Mise à jour de l'affichage
     update_tree_visualization(root_story, canvas)
     viz_window.update()
     
+    # Boucle d'interaction
     while True:
-        prompt = "\n".join([node.text for node in get_story_path(current_node)]) + \
-                 "\nContinue l'histoire avec des réponses concises (maximum 5 phrases) sans jamais proposer de choix."
-        
-        print("\nGénération en cours...")
-        story_part = generate_text(session, prompt, max_tokens=100)
-        print("\n--- Nouvelle partie de l'histoire ---\n")
-        print(story_part)
-        current_node = current_node.add_child(story_part)
-        
-        update_tree_visualization(root_story, canvas)
-        viz_window.update()
-        
         user_input = input("Que se passe-t-il ensuite ? (Tapez '/fin' pour terminer) ")
         if user_input.strip().lower() == "/fin":
+            # On génère la fin en se basant uniquement sur les textes déjà générés
             print("\nFinalisation de l'histoire en cours...")
-            final_prompt = "\n".join([node.text for node in get_story_path(current_node)]) + \
-                           "\nTermine l'histoire de manière satisfaisante et cohérente."
+            final_prompt = "\n".join([node.text for node in get_story_path(current_node)]) \
+                           + "\nTermine l'histoire de manière satisfaisante et cohérente."
             final_part = generate_text(session, final_prompt, max_tokens=75)
             print("\n--- Fin de l'histoire ---\n")
             print(final_part)
@@ -188,10 +203,24 @@ def main():
             viz_window.update()
             break
         
-        current_node = current_node.add_child(user_input)
+        # On construit un prompt : concaténation des textes générés + l'entrée utilisateur
+        # (Mais on n'ajoute PAS l'entrée utilisateur dans l'arbre)
+        prompt = "\n".join([node.text for node in get_story_path(current_node)]) \
+                 + "\n" + user_input \
+                 + "\nContinue l'histoire avec des réponses concises (maximum 5 phrases) sans jamais proposer de choix."
+        
+        print("\nGénération en cours...")
+        story_part = generate_text(session, prompt, max_tokens=100)
+        print("\n--- Nouvelle partie de l'histoire ---\n")
+        print(story_part)
+        
+        # On ajoute la nouvelle partie générée comme enfant
+        current_node = current_node.add_child(story_part)
+        
         update_tree_visualization(root_story, canvas)
         viz_window.update()
     
+    # Sauvegarde de l'histoire complète
     save_story(root_story)
     print("Appuyez sur Entrée pour fermer la fenêtre graphique...")
     input()
