@@ -1,0 +1,49 @@
+.block-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #f9f9f9;
+}
+
+.block {
+  position: absolute;
+  width: 200px;
+  background: white;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;  
+  z-index: 10;
+}
+
+.choice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 4px 0;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+}
+
+.continue-btn {
+  background: black;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: green;
+  margin-left: 4px;
+  cursor: pointer;
+}

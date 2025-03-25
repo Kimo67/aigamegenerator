@@ -1,0 +1,23 @@
+<div class="chat-container" [ngClass]="{'open': isChatOpen}">
+  <div class="chat-box">
+    <div class="chat-header">
+      <h3>Chat</h3>
+      <button (click)="toggleChat()" class="close-btn">✖</button>
+    </div>
+
+    <div class="chat-messages">
+      <div *ngFor="let message of messages" class="message-container" [ngClass]="{'me': message.sender === 'me', 'bot': message.sender === 'bot'}">
+        <span class="message">{{ message.text }}</span>
+      </div>
+    </div>
+
+    <div class="chat-footer">
+      <input [(ngModel)]="newMessage" class="chat-input" placeholder="Écrivez un message..." (keyup.enter)="sendMessage()" />
+      <button (click)="sendMessage()" class="send-btn">➤</button>
+    </div>
+  </div>
+</div>
+
+<button *ngIf="!isChatOpen" (click)="toggleChat()" class="chat-float-btn">
+  💬
+</button>

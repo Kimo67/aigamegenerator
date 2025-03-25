@@ -1,0 +1,25 @@
+<div #blockContainer class="block-container">
+  <div
+    *ngFor="let block of blocks"
+    class="block"
+    [id]="'block-' + block.id"
+    [style.left.px]="block.position?.x"
+    [style.top.px]="block.position?.y"
+  >
+    <p><strong>Bloc {{ block.id }}</strong></p>
+    <p>Description</p>
+
+    <div
+      *ngFor="let choice of block.choices; let i = index"
+      class="choice"
+      [id]="choice.id"
+    >
+      <label>
+        {{ choice.label }}
+      </label>
+
+      <button class="delete-btn" (click)="removeChoice(block.id, choice.id)">🗑</button>
+      <button class="link-btn" (click)="addBlockFromChoice(block.id, choice.id)">➕</button>
+    </div>
+  </div>
+</div>
