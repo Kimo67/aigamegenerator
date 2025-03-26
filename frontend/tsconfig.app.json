@@ -11,5 +11,6 @@
   ],
   "include": [
     "src/**/*.d.ts"
-  ]
+  ],
+  "scripts": ["node_modules/leader-line/leader-line.min.js"]
 }
