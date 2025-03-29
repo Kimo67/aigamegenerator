@@ -4,5 +4,7 @@ export interface Block {
     choices: { id: string; label: string }[];
     position?: { x: number; y: number };
     linkedChoiceId?: string;
-  }
+    // @ts-ignore
+    animate: true
+}
   

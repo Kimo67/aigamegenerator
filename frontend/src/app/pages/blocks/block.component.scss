@@ -47,3 +47,30 @@
   margin-left: 4px;
   cursor: pointer;
 }
+
+@keyframes borderWave {
+  0% {
+    border-image: linear-gradient(to right, var(--border-color) 0%, transparent 100%) 1;
+  }
+  25% {
+    border-image: linear-gradient(to bottom, var(--border-color) 0%, transparent 100%) 1;
+  }
+  50% {
+    border-image: linear-gradient(to left, var(--border-color) 0%, transparent 100%) 1;
+  }
+  75% {
+    border-image: linear-gradient(to top, var(--border-color) 0%, transparent 100%) 1;
+  }
+  100% {
+    border-image: linear-gradient(to right, var(--border-color) 100%, var(--border-color) 100%) 1;
+  }
+}
+
+.animate-border {
+  animation: borderWave 0.8s ease-out forwards;
+  border-width: 2px;
+  border-style: solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to right, var(--border-color), var(--border-color));
+}
+
