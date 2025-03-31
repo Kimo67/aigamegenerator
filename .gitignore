@@ -49,3 +49,5 @@ staticfiles/
 
 # Docker Compose override file (local configurations)
 docker-compose.override.yml
+
+static/rest_framework
