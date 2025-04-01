@@ -1,8 +1,8 @@
 # story/views/case.py
 
 from rest_framework import viewsets
-from story.models.case import Case
-from story.serializers.case import CaseSerializer
+from ..models.case import Case
+from ..serializers.case import CaseSerializer
 
 class CaseViewSet(viewsets.ModelViewSet):
     queryset = Case.objects.all()  # The queryset to fetch the cases

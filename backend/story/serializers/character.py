@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from story.models.character import Character  # Import the model
+from ..models.character import Character  # Import the model
 
 class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
