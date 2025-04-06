@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 
 class Story(models.Model):
     id = models.AutoField(primary_key=True)
@@ -9,3 +11,7 @@ class Story(models.Model):
 
     def __str__(self):
         return self.name
+
+    def soft_delete(self):
+        self.date_deleted = timezone.now()
+        self.save()
