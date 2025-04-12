@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from ..models import CharacterCase
-from ..serializers import CharacterCaseSerializer
+from ..serializers.charactercase import CharacterCaseSerializer
 
 class CharacterCaseViewSet(viewsets.ModelViewSet):
     queryset = CharacterCase.objects.all()
