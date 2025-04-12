@@ -16,3 +16,9 @@ class CharacterCase(models.Model):
 
     def __str__(self):
         return f"{self.character.name} in {self.case.title}"
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['character', 'case'], name='unique_character_case')
+        ]
+
