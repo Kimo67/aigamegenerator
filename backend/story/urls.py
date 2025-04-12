@@ -9,7 +9,7 @@ router = DefaultRouter()
 router.register(r'characters', CharacterViewSet)  # This maps to /api/characters/
 router.register(r'case', CaseViewSet)  # This maps to /api/case/
 router.register(r'stories', StoryViewSet)
-router.register(r'charactercase', CharacterCaseViewSet) 
+router.register(r'charactercase', CharacterCaseViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
