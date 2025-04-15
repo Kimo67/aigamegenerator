@@ -1,0 +1,46 @@
+$NARRATEUR$ L’histoire se déroule dans un royaume lointain, où le mythe du Saint Graal est toujours vivant. Dans ce monde enchanté, un jeune et courageux chevalier nommé Élios a décidé de partir à la recherche de cette coupe sacrée, qui dit-on, apporte bonheur et longue vie aux heureux élus.
+
+$ÉLIOS$ : J'ai juré de trouver le Saint Graal pour mon roi et mon royaume. %HAPPY%
+
+$NARRATEUR$ Élios chevauche à travers les plaines verdoyantes, les forêts denses et les montagnes escarpées, suivant les indices laissés par les légendes anciennes.
+
+$ÉLIOS$ : Voici le lieu où l'on m'a dit que je trouverais des indices sur le Saint Graal. %NEUTRAL%
+
+$UNE SORCIÈRE$ : Chevalier Élios, tu cherches bien la coupe sacrée ? Je peux t'offrir quelques indices pour te guider. %HAPPY%
+
+$ÉLIOS$ : Merci de ta générosité, belle sorcière. Que puis-je faire pour toi en retour ? %NEUTRAL%
+
+$UNE SORCIÈRE$ : Tu dois simplement accomplir trois tâches pour moi avant que tu puisses obtenir les indices. Vas-y, chevalier Élios. %HAPPY%
+Personnages : [Elios] - [Une Sorcière] - [Narrateur]
+  $NARRATEUR$ La sorcière, avec un sourire espiègle, a déroulé trois tâches pour Élios :
+
+1. Apporter la fleur bleue qui pousse dans le royaume enchanté des fées.
+2. Ramener l'eau de la fontaine magique située en haut du mont Pélion.
+3. Libérer un dragon endormi et lui demander où se trouve le Saint Graal.
+
+$ÉLIOS$ : Je m'engage à accomplir ces trois tâches, belle sorcière. %HAPPY%
+
+La première tâche fut la plus difficile, mais Élios réussit à convaincre les fées de lui céder une des fleurs bleues en échange d'une promesse de protéger leur royaume contre un géant qui s'en approchait.
+
+$NARRATEUR$ Ensuite, il entreprit la longue ascension du mont Pélion. Les dangers étaient nombreux, mais Élios ne perdit pas courage et finit par atteindre l'eau magique de la fontaine.
+
+$ÉLIOS$ : Voici l'eau de la fonteine magique ! %HAPPY%
+
+La troisième tâche le mena dans une grotte où dormait un dragon. Élios, sans avoir peur, réveilla gentiment le dragon qui se montra reconnaissant.
+
+$DRAGON$ : Chevalier Élios, j'ai soif de connaître la vérité sur le Saint Graal comme toi. Viens avec moi et je te guiderai à sa recherche. %HAPPY%
+
+$ÉLIOS$ : Volontiers ! Merci, grand dragon. %HAPPY%
+
+Ainsi, après avoir accompli ses trois tâches pour la sorcière, Élios reçut des indices sur le Saint Graal et partit avec le dragon qui lui montra où se trouvait la précieuse coupe.
+
+$NARRATEUR$ Ensemble, ils traversèrent des terres inconnues jusqu'à arriver devant une grotte mystérieuse. Là-dedans, niché dans un coin éclairé par les rayons de lune, brillaient les reflets du Saint Graal.
+
+$ÉLIOS$ : Le voilà ! Je tenais ma promesse envers mon roi et mon royaume. %HAPPY%
+
+Satisfait d'avoir accompli sa quête, Élios emporta le Saint Graal à travers les montagnes escarpées pour le ramener triomphalement chez lui.
+
+$NARRATEUR$ Les habitants du royaume furent ravis de voir leur chevalier revenir avec la précieuse coupe sacrée. Le roi et Élios partagèrent ensemble un peu du nectar magique qui coulait dans le Saint Graal, répandant bonheur et longévité sur tout le royaume.
+
+Et ainsi fut accompli le mythe du Saint Graal par le courageux chevalier Élios.
+  Personnages : Élios - La sorcière - Le dragon

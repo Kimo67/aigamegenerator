@@ -1,0 +1,42 @@
+$NARRATEUR$ L’histoire se déroule dans un royaume lointain où le mythe du Saint Graal est vivant et palpable. Un jeune chevalier, Édouard, commence sa quête pour trouver ce précieux récipient qui peut guérir n'importe quelle maladie.
+
+$ÉDOUARD$ : Je parcours cette terre incertaine à la recherche du Saint Graal, mon cœur est rempli d'espoir et de courage. %
+
+$NARRATEUR$ Sur son chemin, Édouard rencontre un ermite qui lui donne des informations précieuses sur le lieu où se trouverait le Saint Graal.
+
+$L'ermite$ : En cherchant bien, tu finiras par trouver l'église abandonnée au sommet de la colline. C'est là que les légendes disent que le Saint Graal est caché. %
+
+$ÉDOUARD$ : Merci pour tes précieuses informations ermite, je m'en vais maintenant vers ce lieu mystérieux. %
+
+$NARRATEUR$ En route, Édouard croise un guerrier plus âgé et fatigué qui lui donne des conseils sur la quête.
+
+$Guerrier$ : Tu vas devoir être fort mentalement comme physiquement pour trouver le Saint Graal. Ne te laisse pas abattre par les épreuves, continue d'avancer avec détermination. %
+
+$ÉDOUARD$ : Merci guerrier, je vais suivre ton conseil et rester ferme face aux obstacles. %
+
+$NARRATEUR$ Édouard finit par arriver à l'église abandonnée et il découvre un passage souterrain qui mène à une salle secrète.
+
+$ÉDOUARD$ : Je suis sur la bonne piste, j'entre dans cette pièce obscure. %
+
+$NARRATEUR$ Dans la salle cachée, Édouard trouve le Saint Graal protégé par une énigme que seul le cœur pur et noble peut résoudre.
+
+$ÉDOUARD$ : Le Saint Graal est ici ! Mais pour le récupérer je dois résoudre cette énigme. %
+
+$NARRATEUR$ Avec intelligence et dévouement, Édouard réussit à résoudre l'énigme et libère le Saint Graal.
+
+$ÉDOUARD$ : Je suis fier d'avoir réussi ! Maintenant je peux ramener le Saint Graal dans mon royaume. %
+
+$NARRATEUR$ L’histoire de la quête d’Édouard pour trouver le Saint Graal reste gravée dans les mémoires des habitants du royaume et inspire tous ceux qui entendent parler de son aventure.
+Personnages : ['NARRATEUR', 'Guerrier', 'ÉDOUARD', "L'ermite"]
+  $NARRATEUR$ Avec le Saint Graal en main, Édouard commence son voyage de retour vers sa ville natale. Il est accompagné d'une curiosité bienveillante des habitants qu'il croise sur son chemin. %
+
+$ÉDOUARD$ : Le voyage de retour semble long mais chaque pas me rapproche un peu plus du royaume que j'aime et des gens que j'aime. %HAPPY
+
+$NARRATEUR$ Arrivé dans sa ville, Édouard est reçu en héros par le roi et la population. Le Saint Graal est exposé au centre de la cité, un symbole d'espoir pour tous les malades du royaume. %
+
+$ÉDOUARD$ : C'est avec joie que je partage ce trésor avec mon peuple, chaque sourire sur le visage des gens me réchauffe le cœur. %HAPPY
+
+$NARRATEUR$ Grâce à son dévouement et sa bravoure, Édouard est désormais considéré comme un héros national, dont les exploits sont chantés dans toutes les tavernes du royaume. %
+
+$ÉDOUARD$ : Je suis fier de tout ce qui s'est passé mais je sais qu'il y a encore tant à faire pour mon peuple et mon royaume. %NEUTRAL
+  Personnages : ['NARRATEUR', 'ÉDOUARD']

@@ -2,6 +2,7 @@ import ollama
 import os
 from datetime import datetime
 import tkinter as tk
+import re
 
 # Paramètres de mise en page et style
 horizontal_spacing = 200   # espace horizontal entre les feuilles
@@ -35,21 +36,52 @@ class StoryNode:
         self.text = text
         self.parent = parent
         self.children = []
-        self.characters = self.extract_characters(text, session)
-    
-    def extract_characters(self, text, session):
-        prompt = (
-            "Donne moi le nom des personnages qui parlent explicitement présents dans ce bout d'histoire :\n"
-            f"{text}\n\n"
-            "La liste des personnages doit être ainsi : [NOM] - [NOM] - [NOM], n'envoie que la liste de noms."
-        )
-        response = generate_text(session, prompt, max_tokens=50) if session else ""
-        return response.strip()
-    
+        self.characters = self.extract_characters()
+        self.emotions = self.extract_emotions()
+        self.repliques = self.extract_repliques()
+        self.scene = ""  # Chemin vers un fichier JPEG représentant la scène
+
+    def extract_characters(self):
+        return list(set(re.findall(r'\$(.*?)\$', self.text)))
+
+    def extract_emotions(self):
+        return list(set(re.findall(r'%(.*?)%', self.text)))
+
+    def extract_repliques(self):
+        pattern = r'\$(.*?)\$\s*:\s*(.*?)\s*%(.*?)%'
+        repliques = []
+        # On cherche toutes les occurrences correspondant au pattern dans le texte
+        # Le pattern extrait :
+        # - Le nom du personnage entre les signes $ : (.*?)
+        # - Le texte de la réplique après ":" et avant "%" : (.*?)
+        # - L'émotion spécifiée entre les signes % : (.*?)
+        for match in re.findall(pattern, self.text):
+            personnage, texte, emotion = match
+            # On exclut les répliques du narrateur, on ne garde que les répliques des personnages
+            if personnage.strip().upper() != "NARRATEUR":
+                repliques.append({
+                    "personnage": personnage.strip(),
+                    "texte": texte.strip(),
+                    "emotion": emotion.strip()
+                })
+        return repliques
+
     def add_child(self, text):
         child_node = StoryNode(text, parent=self, session=self.session)
         self.children.append(child_node)
         return child_node
+
+    def print_tree(self, depth=0):
+        indent = "  " * depth
+        print(f"{indent}Texte: {self.text}")
+        print(f"{indent}Personnages: {self.characters}")
+        print(f"{indent}Émotions: {self.emotions}")
+        print(f"{indent}Répliques:")
+        for rep in self.repliques:
+            print(f"{indent}  {rep}")
+        print(f"{indent}Scène: {self.scene}")
+        for child in self.children:
+            child.print_tree(depth + 1)
 
 def initialize_model(model="huihui_ai/qwen2.5-abliterate:14b"):
     print("Chargement du modèle, veuillez patienter...")
@@ -169,13 +201,16 @@ def main():
         "Tu es un générateur d'histoires interactives de type Visual Novel. "
         "L'utilisateur te fournit un contexte initial et tu dois générer une histoire immersive en plusieurs étapes en français "
         "en gardant un style proche des visual novel avec des dialogues entre les passages narratifs. "
-        "N'envoie que l'histoire et rien d'autre"
+        "N'envoie que l'histoire en français et rien d'autre"
+        "Débute chaque ligne par la personne qui parle écrite entre deux signes $, si personne ne parle écrit $NARRATEUR$, par exemple pour une histoire basique ça serait : $NARRATEUR$ L'histoire se déroule dans le royaume champignon."
+        "$MARIO$ : Bonjour comment vas-tu ?"
+        "Ajoute à la fin de chaque ligne qui n'est pas dite par le narrateur l'émotion entre ANGRY, HAPPY et NEUTRAL, écrit ça à la fin de la ligne entre deux signe %, c'est à dire %HAPPY% par exemple"
         + context
     )
     
     # Génére immédiatement une introduction depuis ce contexte
     print("\nGénération de l'introduction de l'histoire...")
-    intro_part = generate_text(session, context_with_instruction, max_tokens=75)
+    intro_part = generate_text(session, context_with_instruction, max_tokens=50)
     print("\n--- Introduction de l'histoire ---\n")
     print(intro_part)
     
@@ -193,24 +228,41 @@ def main():
         if user_input.strip().lower() == "/fin":
             # On génère la fin en se basant uniquement sur les textes déjà générés
             print("\nFinalisation de l'histoire en cours...")
-            final_prompt = "\n".join([node.text for node in get_story_path(current_node)]) \
-                           + "\nTermine l'histoire de manière satisfaisante et cohérente."
+            final_prompt = (
+            "\n".join([node.text for node in get_story_path(current_node)]) 
+            + "\nTermine l'histoire de manière satisfaisante et cohérente."
+            " Débute chaque ligne par la personne qui parle écrite entre deux signes $, "
+            "si personne ne parle écrit $NARRATEUR$, par exemple pour une histoire basique ça serait : "
+            "$NARRATEUR$ L'histoire se déroule dans le royaume champignon. "
+            "$MARIO$ : Bonjour comment vas-tu ? "
+            "Ajoute à la fin de chaque ligne qui n'est pas dite par le narrateur l'émotion entre ANGRY, HAPPY et NEUTRAL, "
+            "écrit ça à la fin de la ligne entre deux signe %, c'est à dire %HAPPY% par exemple."
+)
+
             final_part = generate_text(session, final_prompt, max_tokens=75)
             print("\n--- Fin de l'histoire ---\n")
             print(final_part)
             current_node.add_child(final_part)
             update_tree_visualization(root_story, canvas)
             viz_window.update()
+            root_story.print_tree()
             break
         
         # On construit un prompt : concaténation des textes générés + l'entrée utilisateur
         # (Mais on n'ajoute PAS l'entrée utilisateur dans l'arbre)
-        prompt = "\n".join([node.text for node in get_story_path(current_node)]) \
+        prompt = ("\n".join([node.text for node in get_story_path(current_node)]) \
                  + "\n" + user_input \
                  + "\nContinue l'histoire avec des réponses concises (maximum 5 phrases) sans jamais proposer de choix."
-        
+                  " Débute chaque ligne par la personne qui parle écrite entre deux signes $, "
+                    "si personne ne parle écrit $NARRATEUR$, par exemple pour une histoire basique ça serait : "
+                    "$NARRATEUR$ L'histoire se déroule dans le royaume champignon. "
+                    "$MARIO$ : Bonjour comment vas-tu ? "
+                    "Ajoute à la fin de chaque ligne qui n'est pas dite par le narrateur l'émotion entre ANGRY, HAPPY et NEUTRAL, "
+                    "écrit ça à la fin de la ligne entre deux signe %, c'est à dire %HAPPY% par exemple."
+
+        )
         print("\nGénération en cours...")
-        story_part = generate_text(session, prompt, max_tokens=100)
+        story_part = generate_text(session, prompt, max_tokens=50)
         print("\n--- Nouvelle partie de l'histoire ---\n")
         print(story_part)
         
