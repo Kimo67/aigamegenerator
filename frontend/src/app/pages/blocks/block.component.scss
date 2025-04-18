@@ -11,9 +11,10 @@
   background: white;
   padding: 16px;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px;  
   z-index: 10;
+  border: 2px solid black;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease-in-out;
 }
 
 .choice {
@@ -48,29 +49,13 @@
   cursor: pointer;
 }
 
-@keyframes borderWave {
-  0% {
-    border-image: linear-gradient(to right, var(--border-color) 0%, transparent 100%) 1;
-  }
-  25% {
-    border-image: linear-gradient(to bottom, var(--border-color) 0%, transparent 100%) 1;
-  }
-  50% {
-    border-image: linear-gradient(to left, var(--border-color) 0%, transparent 100%) 1;
-  }
-  75% {
-    border-image: linear-gradient(to top, var(--border-color) 0%, transparent 100%) 1;
-  }
-  100% {
-    border-image: linear-gradient(to right, var(--border-color) 100%, var(--border-color) 100%) 1;
-  }
+.command-input {
+  width: 100%;
+  padding: 6px 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 13px;
+  box-sizing: border-box;
 }
-
-.animate-border {
-  animation: borderWave 0.8s ease-out forwards;
-  border-width: 2px;
-  border-style: solid;
-  border-image-slice: 1;
-  border-image-source: linear-gradient(to right, var(--border-color), var(--border-color));
-}
-

@@ -6,12 +6,15 @@
     [style.left.px]="block.position?.x"
     [style.top.px]="block.position?.y"
     [style.border]="'2px solid ' + getBlockBorderColor(block)"
-    [class.animate-border]="block['animate']"
-    [style.--border-color]="getBlockBorderColor(block)"
   >
     <p><strong>Bloc {{ block.id }}</strong></p>
-    <p>Description</p>
-
+    <input
+      type="text"
+      class="command-input"
+      [(ngModel)]="block.command"
+      (keyup.enter)="handleCommandEnter(block)"
+      placeholder="Entrez un prompt..."
+    />
     <div
       *ngFor="let choice of block.choices; let i = index"
       class="choice"
@@ -20,7 +23,6 @@
       <label>
         {{ choice.label }}
       </label>
-
       <button class="delete-btn" (click)="removeChoice(block.id, choice.id)">🗑</button>
       <button class="link-btn" (click)="addBlockFromChoice(block.id, choice.id)">➕</button>
     </div>

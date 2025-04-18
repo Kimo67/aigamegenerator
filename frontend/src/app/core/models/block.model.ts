@@ -1,10 +1,9 @@
 export interface Block {
     id: number;
     parentId?: number;
+    linkedChoiceId?: string;
     choices: { id: string; label: string }[];
     position?: { x: number; y: number };
-    linkedChoiceId?: string;
-    // @ts-ignore
-    animate: true
+    command?: string;
 }
   

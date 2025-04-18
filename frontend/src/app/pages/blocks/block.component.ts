@@ -1,28 +1,27 @@
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { NgFor } from "@angular/common";
+import { FormsModule } from '@angular/forms';
 import { Block } from '../../core/models/block.model';
 
 @Component({
   selector: 'app-block',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, FormsModule],
   templateUrl: './block.component.html',
   styleUrls: ['./block.component.scss']
 })
 export class BlockComponent implements AfterViewInit {
   nextId = 2;
+
   blocks: Block[] = [
     {
       id: 1,
-      choices: [
-        { id: this.generateChoiceId(1, 1), label: 'Choix 1' },
-        { id: this.generateChoiceId(1, 2), label: 'Choix 2' },
-        { id: this.generateChoiceId(1, 3), label: 'Choix 3' }
-      ],
-      position: { x: 50, y: 50 },
-      animate: true
+      command: '',
+      choices: [],
+      position: { x: 50, y: 50 }
     }
   ];
+
   lines: { line: any, linkedChoiceId: string }[] = [];
   occupiedPositions: Set<string> = new Set();
 
@@ -30,22 +29,33 @@ export class BlockComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.updateLines();
+    setTimeout(() => this.addChoiceHoverListeners(), 150);
+  }
 
-    setTimeout(() => {
-      this.addChoiceHoverListeners();
-    }, 150);
+  handleCommandEnter(block: Block) {
+    const text = block.command?.trim();
+    if (!text) return;
+
+    // Simulation d'un retour d'API avec "Choix 1"
+    const newChoiceLabel = 'Choix 1';
+    const newChoice = {
+      id: this.generateChoiceId(block.id, block.choices.length + 1),
+      label: newChoiceLabel
+    };
+
+    block.choices.push(newChoice);
+    block.command = ''; // Réinitialise le champ input
   }
 
   addBlock(parentId: number) {
     const parent = this.blocks.find(b => b.id === parentId);
-    const siblings = this.blocks.filter(b => b.parentId === parentId);
+    if (!parent) return;
 
-    const baseX = (parent?.position?.x || 0) + 320;
-    let baseY = (parent?.position?.y || 0);
+    const baseX = (parent.position?.x || 0) + 320;
+    let baseY = parent.position?.y || 0;
 
     let yOffset = 0;
     let positionKey = `${baseX},${baseY + yOffset}`;
-
     while (this.occupiedPositions.has(positionKey)) {
       yOffset += 280;
       positionKey = `${baseX},${baseY + yOffset}`;
@@ -57,13 +67,9 @@ export class BlockComponent implements AfterViewInit {
     this.blocks.push({
       id: this.nextId++,
       parentId,
-      choices: [
-        { id: this.generateChoiceId(this.nextId, 1), label: 'Choix 1' },
-        { id: this.generateChoiceId(this.nextId, 2), label: 'Choix 2' },
-        { id: this.generateChoiceId(this.nextId, 3), label: 'Choix 3' },
-      ],
-      position: { x, y },
-      animate: true
+      command: '',
+      choices: [],
+      position: { x, y }
     });
 
     this.occupiedPositions.add(positionKey);
@@ -74,48 +80,10 @@ export class BlockComponent implements AfterViewInit {
     }, 50);
   }
 
-  generateChoiceId(blockId: number, index: number): string {
-    return `choice-${blockId}-${index}-${Math.floor(Math.random() * 100000)}`;
-  }
-
-  removeBlock(id: number) {
-    this.blocks = this.blocks.filter(block => block.id !== id && block.parentId !== id);
-    this.updateLines();
-  }
-
-  removeChoice(blockId: number, choiceId: string) {
-    const block = this.blocks.find(b => b.id === blockId);
-    if (!block) return;
-
-    block.choices = block.choices.filter(c => c.id !== choiceId);
-
-    const childBlock = this.blocks.find(
-      b => b.parentId === blockId && b.linkedChoiceId === choiceId
-    );
-
-    if (childBlock) {
-      this.removeBlockRecursive(childBlock.id);
-    }
-
-    this.updateLines();
-  }
-
-  removeBlockRecursive(id: number) {
-    const children = this.blocks.filter(b => b.parentId === id);
-    children.forEach(child => this.removeBlockRecursive(child.id));
-
-    const block = this.blocks.find(b => b.id === id);
-    if (block && block.position) {
-      const key = `${block.position.x},${block.position.y}`;
-      this.occupiedPositions.delete(key);
-    }
-
-    this.blocks = this.blocks.filter(b => b.id !== id);
-  }
-
   addBlockFromChoice(parentBlockId: number, choiceId: string) {
     const parent = this.blocks.find(b => b.id === parentBlockId);
     if (!parent) return;
+
     const alreadyLinked = this.blocks.some(
       b => b.parentId === parentBlockId && b.linkedChoiceId === choiceId
     );
@@ -138,13 +106,9 @@ export class BlockComponent implements AfterViewInit {
       id: this.nextId++,
       parentId: parentBlockId,
       linkedChoiceId: choiceId,
-      choices: [
-        { id: this.generateChoiceId(this.nextId, 1), label: 'Choix 1' },
-        { id: this.generateChoiceId(this.nextId, 2), label: 'Choix 2' },
-        { id: this.generateChoiceId(this.nextId, 3), label: 'Choix 3' },
-      ],
-      position: { x, y },
-      animate: true
+      command: '',
+      choices: [],
+      position: { x, y }
     };
 
     this.blocks.push(newBlock);
@@ -154,13 +118,45 @@ export class BlockComponent implements AfterViewInit {
       this.updateLines();
       this.addChoiceHoverListeners();
     }, 50);
+  }
 
-    // Supprimer l'animation après qu'elle soit jouée
-    setTimeout(() => {
-      const b = this.blocks.find(b => b.id === newBlock.id);
-      if (b) delete (b as any).animate;
-    }, 1000);
-      
+  generateChoiceId(blockId: number, index: number): string {
+    return `choice-${blockId}-${index}-${Math.floor(Math.random() * 100000)}`;
+  }
+
+  removeChoice(blockId: number, choiceId: string) {
+    const block = this.blocks.find(b => b.id === blockId);
+    if (!block) return;
+
+    block.choices = block.choices.filter(c => c.id !== choiceId);
+
+    const childBlock = this.blocks.find(
+      b => b.parentId === blockId && b.linkedChoiceId === choiceId
+    );
+
+    if (childBlock) {
+      this.removeBlockRecursive(childBlock.id);
+    }
+
+    this.updateLines();
+  }
+
+  removeBlock(id: number) {
+    this.blocks = this.blocks.filter(block => block.id !== id && block.parentId !== id);
+    this.updateLines();
+  }
+
+  removeBlockRecursive(id: number) {
+    const children = this.blocks.filter(b => b.parentId === id);
+    children.forEach(child => this.removeBlockRecursive(child.id));
+
+    const block = this.blocks.find(b => b.id === id);
+    if (block?.position) {
+      const key = `${block.position.x},${block.position.y}`;
+      this.occupiedPositions.delete(key);
+    }
+
+    this.blocks = this.blocks.filter(b => b.id !== id);
   }
 
   updateLines() {
@@ -172,8 +168,8 @@ export class BlockComponent implements AfterViewInit {
       if (!LeaderLine) return;
 
       this.blocks.forEach(block => {
-        if (block.parentId && (block as any).linkedChoiceId) {
-          const parentChoiceElement = document.getElementById((block as any).linkedChoiceId);
+        if (block.parentId && block.linkedChoiceId) {
+          const parentChoiceElement = document.getElementById(block.linkedChoiceId);
           const childBlockElement = document.getElementById(`block-${block.id}`);
 
           if (parentChoiceElement && childBlockElement) {
@@ -188,7 +184,7 @@ export class BlockComponent implements AfterViewInit {
               endSocket: 'left'
             });
 
-            this.lines.push({ line, linkedChoiceId: (block as any).linkedChoiceId });
+            this.lines.push({ line, linkedChoiceId: block.linkedChoiceId });
           }
         }
       });
@@ -246,10 +242,6 @@ export class BlockComponent implements AfterViewInit {
   }
 
   getBlockBorderColor(block: Block): string {
-    if (!block.parentId) {
-      return 'black';
-    }
-    return this.getColorForParent(block.parentId);
+    return block.parentId ? this.getColorForParent(block.parentId) : 'black';
   }
-  
 }
