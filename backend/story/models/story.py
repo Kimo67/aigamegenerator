@@ -3,7 +3,6 @@ from django.utils import timezone
 
 
 class Story(models.Model):
-    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
