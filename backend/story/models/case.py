@@ -6,7 +6,9 @@ class Case(models.Model):
     description = models.TextField(blank=True, null=True)
     text = models.TextField(blank=True, null=True)
     background = models.TextField(blank=True, null=True)
-    parent = models.IntegerField(blank=True, null=False, default=0)
+    parent = models.ForeignKey(
+        "self", on_delete=models.SET_NULL, null=True, blank=True, related_name="children"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
