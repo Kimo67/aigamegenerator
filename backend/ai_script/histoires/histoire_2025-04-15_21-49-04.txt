@@ -1,0 +1,81 @@
+$NARRATEUR$ L'histoire se déroule dans un royaume imaginaire où les légendes parlent de l'existence d'un mystérieux Graal, objet sacré capable de conférer des pouvoirs divins. Un jeune chevalier, Alain, a entrepris une quête épique pour le trouver et ramener la paix dans son royaume. Il se trouve maintenant devant un grand chêne centenaire au cœur d'une forêt sombre.
+
+$ALAIN$ : Je sens que quelque chose d'important m'attend derrière ce chêne... J'ai entendu dire qu'il était le gardien du chemin secret menant au Graal.
+%SCEPTICHE%
+
+$NARRATEUR$ Alain pousse le tronc de l'arbre et découvre une cachette secrète, révélant un passage étroit et obscur. Il hésite un instant avant d'entrer.
+
+$ALAIN$ : Ici, dans la pénombre, j'ai presque l'impression de sentir les murmures du passé...
+%MÉDITATIF%
+
+$NARRATEUR$ Alain avance prudemment le long du passage, éclairant son chemin avec une torche. Après quelques instants, il arrive à un grand hall souterrain illuminé par des cristaux luminescents.
+
+$NARRATEUR$ Au centre de la pièce se trouve une fontaine dont l'eau scintille d'un éclat bleuté. Près du bassin, une vieille femme aux cheveux blancs comme neige et vêtue de rouge observe Alain avec attention.
+
+$VIEILLE FEMME$ : Bienvenue cher voyageur, je suis la gardienne des secrets enfouis sous cette terre. Vous êtes le premier à venir ici depuis longtemps.
+%SAGESSE%
+
+$ALAIN$ : Je m'appelle Alain et je cherche le Graal pour ramener la paix dans mon royaume. Pourrais-je connaître votre nom ?
+%CURIEUX%
+
+$VIEILLE FEMME$ : On me nomme Ysabel, bienvenue dans ma demeure, Alain.
+%HAPPY%
+
+$NARRATEUR$ Ysabel s'approche de la fontaine et plonge doucement sa main dans l'eau scintillante.
+
+$VIEILLE FEMME$ : L'eau de cette fontaine contient les souvenirs de ceux qui ont cherché le Graal. En y plonger votre main, vous pourrez entendre leurs histoires.
+%SAGESSE%
+
+Alain s'approche à son tour et tend sa main vers l'eau magique...
+Personnages : ['VIEILLE FEMME', 'NARRATEUR', 'ALAIN']
+  $VIEILLE FEMME$ : Attention Alain, prenez votre temps avec cette fontaine... Elle est pleine de secrets.
+%MÉDITATIVE%
+
+$ALAIN$ : Je suis désolé Ysabel, mais je voulais juste toucher l'eau pour entendre les histoires.
+%SCEPTIQUE%
+
+$NARRATEUR$ La vieille femme esquisse un sourire en voyant la curiosité d'Alain.
+
+$VIEILLE FEMME$ : Ne vous inquiétez pas, cher chevalier. Les souvenirs de l'eau ne se fâteront pas contre vous.
+%HAPPY%
+  Personnages : ['VIEILLE FEMME', 'NARRATEUR', 'ALAIN']
+    $ALAIN$ : Merci Ysabel, je vais y plonger lentement pour ne pas troubler les souvenirs.
+%MÉDITATIF%
+
+Alain approche sa main de l'eau et doucement, il la fait pénétrer dans le bassin. L'instant d'après, une lumière bleutée enveloppe sa main.
+
+$NARRATEUR$ Alain est submergé par un flot de souvenirs qui défilent devant ses yeux comme des images projetées : les visages des autres chercheurs du Graal, leurs efforts et leurs espoirs. Il voit aussi les défis qu'ils ont affrontés, la peur dans leurs regards lorsqu'ils approchaient d'une épreuve difficile.
+
+$ALAIN$ : Ils étaient tous si courageux... J'ai l'impression de ressentir leur détermination.
+%HAPPY%
+
+$VIEILLE FEMME$ : Oui Alain, chaque chercheur du Graal laisse une trace ici. Vous pouvez y sentir la sagesse des précédents venus avant vous.
+%SAGESSE%
+
+Alain retire sa main et un silence résonne dans le hall souterrain.
+
+$ALAIN$ : Ces souvenirs m'ont apporté plus de courage que je ne l'avais imaginé. Mais où est le Graal ?
+%NEUTRAL%
+
+$VIEILLE FEMME$ : Le Graal se trouve au-delà des eaux scintillantes, mais il n'est pas facile à atteindre. Vous devez résoudre une dernière énigme.
+%SAGESSE%
+
+$NARRATEUR$ Ysabel tend la main vers un livre ancien posé sur une pierre sculptée. Elle l'ouvre et en sort une feuille de papier jauni.
+
+$VIEILLE FEMME$ : L'énigme est écrite ici, elle guide ceux qui cherchent le Graal.
+%HAPPY%
+
+$ALAIN$ : Que faut-il faire pour résoudre cette énigme, Ysabel ?
+%CURIEUX%
+
+$NARRATEUR$ Le visage d'Alain s'anime de la concentration tandis qu'il lit l'énoncé de l'énigme. Après quelques instants de réflexion, un sourire se dessine sur ses lèvres.
+
+$ALAIN$ : Je crois que j'ai trouvé la réponse Ysabel.
+%HAPPY%
+
+$VIEILLE FEMME$ : Alors allez-y chercher le Graal, cher chevalier. Que votre quête soit guidée par la sagesse et l'amour de votre royaume.
+%SAGESSE%
+
+Alain remercie Ysabel puis sort du hall souterrain, sa confiance en lui renforcée par les souvenirs des anciens chercheurs. Il se dirige vers le Graal avec détermination, prêt à ramener la paix à son royaume.
+%HAPPY%
+    Personnages : ['VIEILLE FEMME', 'NARRATEUR', 'ALAIN']

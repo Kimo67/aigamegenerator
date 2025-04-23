@@ -1,0 +1,24 @@
+$NARRATEUR$ L'histoire se déroule dans un royaume médiéval où le mystère entoure la légende du Graal. Dans ce monde, chaque brin d’herbe semble porter une partie de l'histoire ancienne et les rumeurs des villages lointains murmurent sur le chevalier qui doit trouver ce trésor sacré.
+
+$CHEVALIER$ Je dois traverser cette forêt pour atteindre la montagne où se trouve la légende du Graal. %NEUTRAL%
+
+$VIEILLARD$ Bonne chance, jeune homme ! La forêt est pleine de mystères et d'obstacles. Écoute bien tes instincts et sois prudent. %HAPPY%
+
+$CHEVALIER$ Merci pour vos bons conseils, monsieur. Je les garderai en tête tout au long de mon parcours. %NEUTRAL%
+Personnages : ['CHEVALIER', 'VIEILLARD', 'NARRATEUR']
+  $NARRATEUR$ Le chevalier s'enfonce dans les bois ombragés, guidé par le murmure des ruisseaux et l'odeur fraîche de la terre humide. Les arbres géants se dressent autour de lui comme des sentinelles silencieuses. %NEUTRAL%
+
+$CHEVALIER$ Je sens que je dois faire attention à chaque pas, mais ma détermination ne faiblit pas. %HAPPY%
+
+$NARRATEUR$ Au cœur de la forêt dense, il rencontre une clairière baignée de lumière filtrée par les feuilles. Un vieux cerf le regarde avec curiosité depuis sa cachette parmi les buissons d'églantines en fleur. %NEUTRAL%
+
+$CHEVALIER$ Ce cerf semble m'observer, j'ai l'impression qu'il me guide vers ma prochaine étape. %HAPPY%
+
+$NARRATEUR$ Le chevalier continue son chemin guidé par le regard paisible du cerf jusqu'à une rivière cristalline qui coule avec douceur à travers les rochers et les herbes hautes. Des écureuils jouent près de la rive, tandis que l'eau murmure comme un doux secret ancien. %NEUTRAL%
+
+$CHEVALIER$ L'air est pur ici, je peux sentir le sifflement de l'eau qui court. La paix de ce lieu me calme et m'aide à retrouver mon chemin. %HAPPY%
+
+$NARRATEUR$ À la tombée du jour, il arrive dans une petite grotte nichée sous un rocher imposant. De l'intérieur sortent des éclats dorés qui attirent son regard avec curiosité. Il s'approche doucement et découvre le Graal en partie dissimulé par les racines d'un buisson de bruyère. %HAPPY%
+
+$CHEVALIER$ Je l'ai trouvé, c'est bien lui... Le trésor sacré du royaume ! Je dois le ramener à sa place pour que tous puissent admirer et respecter cette merveille légendaire. %HAPPY%
+  Personnages : ['CHEVALIER', 'NARRATEUR']
