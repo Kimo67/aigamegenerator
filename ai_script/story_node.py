@@ -67,3 +67,16 @@ class StoryNode:
         print(f"{indent}Scène: {self.scene}")
         for child in self.children:
             child.print_tree(depth + 1)
+
+    def tree_to_dict(self, depth=0):
+        # Build a dictionary representation of the tree
+        node_data = {
+            "texte": self.text,
+            "choix_possibles": self.choix,
+            "personnages": self.characters,
+            "émotions": self.emotions,
+            "répliques": self.repliques,
+            "scène": self.scene,
+            "children": [child.tree_to_dict(depth + 1) for child in self.children]  # Recursively add children
+        }
+        return node_data

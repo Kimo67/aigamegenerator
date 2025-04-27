@@ -1,6 +1,11 @@
 import ollama
+import subprocess
+import time
 
-def initialize_model(model="huihui_ai/qwen2.5-abliterate:14b"):
+def initialize_model(model="qwen2.5:3b"):
+# Running a simple shell command (e.g., 'ls')
+    subprocess.Popen(['ollama', 'serve'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    time.sleep(2)
     print("Chargement du modèle, veuillez patienter...")
     ollama.pull(model)
     return model
