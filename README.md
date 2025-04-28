@@ -22,3 +22,8 @@ To stop the containers, use:
 ```bash
 docker compose down
 ```
+
+To build all the docker images and run them
+```bash
+docker-compose build && docker-compose up -d
+```

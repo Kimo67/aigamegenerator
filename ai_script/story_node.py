@@ -2,6 +2,7 @@ import re
 
 class StoryNode:
     def __init__(self, text, parent=None, session=None):
+        self.id = 0
         self.session = session
         self.text = text
         self.parent = parent
@@ -56,6 +57,7 @@ class StoryNode:
 
     def print_tree(self, depth=0):
         indent = "  " * depth
+        print(self.id)
         print(f"{indent}Texte: {self.text}")
         if self.choix:
             print(f"{indent}Choix possibles: {self.choix}")
@@ -65,12 +67,14 @@ class StoryNode:
         for rep in self.repliques:
             print(f"{indent}  {rep}")
         print(f"{indent}Scène: {self.scene}")
+        print(f"{indent}Children: {self.children}")
         for child in self.children:
             child.print_tree(depth + 1)
 
     def tree_to_dict(self, depth=0):
         # Build a dictionary representation of the tree
         node_data = {
+            "id" : self.id,
             "texte": self.text,
             "choix_possibles": self.choix,
             "personnages": self.characters,

@@ -22,6 +22,7 @@ async def startup_event():
     root_story = StoryNode(initial_text, session=session)
     print(f"Premier nœud de l'histoire créé : {root_story.text}")
 
+
 @app.get("/story/tree")
 async def get_story_tree():
     global root_story
@@ -38,18 +39,40 @@ DJANGO_API_URL = "http://django-app:8001/api/case/"
 
 def add_case_to_story(cases, story_node):
     """
-    A helper function to add cases to a story node.
-    Assumes StoryNode is unchangeable, so this function handles the logic
-    of mapping the cases to the StoryNode structure.
+    Build the story tree properly by linking cases to their parent nodes.
     """
-    # Add each case as a child StoryNode
+    id_to_node = {}  # Map of case ID -> StoryNode
+
+    # First pass: create all nodes
     for case in cases:
-        case_node = StoryNode(case["title"])  # Assuming the "title" can be used as text
-        # Add any other information from the case (e.g., description) to case_node
-        case_node.text = case.get("description", "No description available")
-        # Add this node to the parent node (which is the story node)
-        story_node.children.append(case_node)
-    
+        case_text = case.get("text") or case.get("title") or "No Text"
+        node = StoryNode(text=case_text)
+
+        # Attach additional info
+        node.scene = case.get("background", "")
+        node.repliques = [case.get("description", "")] if case.get("description") else []
+        node.id = case.get("id")
+        # Store the case ID in the node's session or scene if needed
+        node.session = {"id": case["id"]}
+
+        id_to_node[case["id"]] = node
+
+    # Second pass: assign children to parents
+    for case in cases:
+        node = id_to_node[case["id"]]
+        parent_id = case.get("parent")
+
+        if parent_id:
+            parent_node = id_to_node.get(parent_id)
+            if parent_node:
+                parent_node.children.append(node)
+            else:
+                # Orphan node, no known parent -> attach to root
+                story_node.children.append(node)
+        else:
+            # No parent -> attach to root
+            story_node.children.append(node)
+
     return story_node
 
 @app.get("/sync-story-with-cases")
