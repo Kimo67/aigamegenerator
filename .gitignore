@@ -1,0 +1,5 @@
+# Dossier EMF généré par emf_init.py
+image_gen/emf_image_app/
+
+# Images de démonstration créées par le script
+image_gen/generated*.png
