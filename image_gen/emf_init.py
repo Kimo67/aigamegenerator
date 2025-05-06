@@ -66,9 +66,7 @@ def generate_background(prompt:str):
     import torch
     from diffusers import StableDiffusionPipeline, EulerAncestralDiscreteScheduler
 
-    # ----------- SEULE LIGNE MODIFIÉE -----------
     device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
-    # --------------------------------------------
 
     pipe=StableDiffusionPipeline.from_pretrained(MODEL_ID, torch_dtype=torch.float32, safety_checker=None)
     pipe.scheduler=EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
