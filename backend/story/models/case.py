@@ -6,7 +6,8 @@ class Case(models.Model):
     story = models.ForeignKey(Story, on_delete=models.CASCADE)
     characters = models.ManyToManyField('Character', through='story.CharacterCase', related_name='cases')
     description = models.TextField(blank=True, null=True)
-    text = models.TextField(blank=True, null=True)
+    prompt = models.TextField(blank=True, null=False)
+    repliques = models.JSONField(default=list, blank=True, null=True)
     background = models.TextField(blank=True, null=True)
     parent = models.ForeignKey(
         "self", on_delete=models.SET_NULL, null=True, blank=True, related_name="children"
@@ -15,3 +16,5 @@ class Case(models.Model):
 
     def __str__(self):
         return self.title
+    
+    

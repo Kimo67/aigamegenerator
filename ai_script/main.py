@@ -4,11 +4,18 @@ from fastapi import HTTPException
 from model import initialize_model  # Assure-toi que le modèle est importé
 from story_node import StoryNode
 import requests
+from pydantic import BaseModel
+from prompt_manager import initial_prompt, continuation_prompt, final_prompt
+from model import initialize_model, generate_text
 
 app = FastAPI()
 session = None
 root_story = None
 
+DJANGO_API_CASE_URL = "http://django-app:8001/api/case/"
+
+############### API CALL STARTUP
+############### HAPPENS WHEN API STARTS 
 @app.on_event("startup")
 async def startup_event():
     global session, root_story
@@ -21,8 +28,16 @@ async def startup_event():
     initial_text = "Ceci est le début de notre histoire."
     root_story = StoryNode(initial_text, session=session)
     print(f"Premier nœud de l'histoire créé : {root_story.text}")
+############### API CALL STARTUP
+############### HAPPENS WHEN API STARTS
 
+################################################################################
 
+############### API CALL - STORY TREE
+############### DISPLAYS THE STORY TREE, USED FOR DEBUG PURPOUSES
+'''
+Api call that returns the complete story in the form of a tree dictionnary
+'''
 @app.get("/story/tree")
 async def get_story_tree():
     global root_story
@@ -33,10 +48,48 @@ async def get_story_tree():
     # Convert the tree to a dictionary and return it as JSON
     tree_data = root_story.tree_to_dict()
     return JSONResponse(content=tree_data)
+############### API CALL - STORY TREE
+############### DISPLAYS THE STORY TREE, USED FOR DEBUG PURPOUSES
+
+################################################################################
+
+############### API CALL SYNCH STORY 
+############### CALLS THE DJANGO API TO GET THE STORY FROM IT AND INITIALIZES IT IN THE AI.
+@app.get("/sync-story-with-cases")
+async def sync_story_with_cases():
+    """
+    Syncs the story with cases from the Django API by adding each case as a child to the root node.
+    """
+    global root_story
+    try:
+        # Fetch all cases for the given story ID from the Django API
+        response = requests.get(DJANGO_API_CASE_URL)
+        
+        if response.status_code == 200:
+            cases = response.json()  # Extract cases from the API response
+            
+            # Create the root story node (assuming you can create it here)
+            root_story = StoryNode("Root Story Text")  # Placeholder for the root story node text
+            
+            # Add cases to the root story node
+            updated_story = add_case_to_story(cases, root_story)
+            
+            # Optionally print the tree for debugging purposes
+            updated_story.print_tree()  # Or, convert to a dictionary or JSON if you need to return it
+            
+            return JSONResponse(content={"message": "Story synced with cases", "tree": "Tree updated successfully!"})
+        else:
+            print("Code status : " + str(response.status_code))
+            print(response.text)
+            raise HTTPException(status_code=response.status_code, detail="Error fetching cases from Django API")
+    
+    except requests.RequestException as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred while requesting the Django API: {e}")
 
 
-DJANGO_API_URL = "http://django-app:8001/api/case/"
-
+'''
+Helper function that adds a case to a story
+'''
 def add_case_to_story(cases, story_node):
     """
     Build the story tree properly by linking cases to their parent nodes.
@@ -74,34 +127,76 @@ def add_case_to_story(cases, story_node):
             story_node.children.append(node)
 
     return story_node
+############### API CALL SYNCH STORY 
+############### CALLS THE DJANGO API TO GET THE STORY FROM IT AND INITIALIZES IT IN THE AI.
 
-@app.get("/sync-story-with-cases")
-async def sync_story_with_cases():
-    """
-    Syncs the story with cases from the Django API by adding each case as a child to the root node.
-    """
+################################################################################
+
+############### API CALL - ADD NODE
+############### ADDS A NODE BASED ON A PROMPT SENT BY FRONTEND WITH POST METHOD
+class AddNodeRequest(BaseModel):
+    prompt: str
+    parent_id: int
+    id: int
+
+def find_node_by_id(node, target_id):
+    if getattr(node, "id", None) == target_id:
+        return node
+
+    for child in node.children:
+        result = find_node_by_id(child, target_id)
+        if result:
+            return result
+    return None
+
+@app.post("/story/add-node")
+async def add_node(request: AddNodeRequest):
     global root_story
-    try:
-        # Fetch all cases for the given story ID from the Django API
-        response = requests.get(DJANGO_API_URL)
-        
-        if response.status_code == 200:
-            cases = response.json()  # Extract cases from the API response
-            
-            # Create the root story node (assuming you can create it here)
-            root_story = StoryNode("Root Story Text")  # Placeholder for the root story node text
-            
-            # Add cases to the root story node
-            updated_story = add_case_to_story(cases, root_story)
-            
-            # Optionally print the tree for debugging purposes
-            updated_story.print_tree()  # Or, convert to a dictionary or JSON if you need to return it
-            
-            return JSONResponse(content={"message": "Story synced with cases", "tree": "Tree updated successfully!"})
-        else:
-            print("Code status : " + str(response.status_code))
-            print(response.text)
-            raise HTTPException(status_code=response.status_code, detail="Error fetching cases from Django API")
-    
-    except requests.RequestException as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred while requesting the Django API: {e}")
+
+    parent_node = find_node_by_id(root_story, request.parent_id)
+    if parent_node is None:
+        raise HTTPException(status_code=404, detail="Parent node not found.")
+
+    prompt_suite = continuation_prompt(parent_node, request.prompt)
+    story_part = generate_text(session, prompt_suite, max_tokens=50)
+    print("\n--- Nouvelle partie de l'histoire ---\n")
+    print(story_part)
+
+    # Create new node and attach it
+    new_node = StoryNode(story_part, parent=parent_node, session=session)
+    new_node.id = request.id
+    parent_node.children.append(new_node)
+
+    return JSONResponse(new_node.tree_to_dict())
+############### API CALL - ADD NODE
+############### ADDS A NODE BASED ON A PROMPT SENT BY FRONTEND WITH POST METHOD
+
+################################################################################
+
+
+############### API CALL - ADD NODE START - INIT PROMPT
+############### ADDS A NODE BASED ON A PROMPT SENT BY FRONTEND WITH POST METHOD - INIT PROMPT
+
+@app.post("/story/add-node-start")
+async def add_node(request: AddNodeRequest):
+    global root_story
+
+    parent_node = find_node_by_id(root_story, 0)
+    if parent_node is None:
+        raise HTTPException(status_code=404, detail="Parent node not found.")
+
+    prompt_suite = initial_prompt(request.prompt)
+    story_part = generate_text(session, prompt_suite, max_tokens=50)
+    print("\n--- Nouvelle partie de l'histoire ---\n")
+    print(story_part)
+
+    # Create new node and attach it
+    new_node = StoryNode(story_part, parent=parent_node, session=session)
+    new_node.id = request.id
+    parent_node.children.append(new_node)
+
+    return JSONResponse(content=new_node.tree_to_dict())
+############### API CALL - ADD NODE START - INIT PROMPT
+############### ADDS A NODE BASED ON A PROMPT SENT BY FRONTEND WITH POST METHOD - INIT PROMPT
+
+################################################################################
