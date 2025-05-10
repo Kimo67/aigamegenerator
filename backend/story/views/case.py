@@ -4,6 +4,7 @@ from ..serializers.case import CaseSerializer
 import requests
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from ..models.character import Character
 
 class CaseViewSet(viewsets.ModelViewSet):
     queryset = Case.objects.all()  # The queryset to fetch the cases
@@ -59,6 +60,19 @@ class CaseViewSet(viewsets.ModelViewSet):
             if(p_id != None):
                 parent_case = Case.objects.get(id=p_id)
                 case.parent = parent_case
+
+            # extract characters
+            for replique in case.repliques:
+                Character.objects.get_or_create(
+                name=replique["personnage"],
+                defaults={
+                    "age": None,
+                    "imagepath": "",
+                    "description": "",
+                    "hexcolor": "",
+                })
+                case.characters.append(replique["personnage"])
+
             case.save()
 
         except requests.RequestException as e:

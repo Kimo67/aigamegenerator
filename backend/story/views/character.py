@@ -4,4 +4,5 @@ from ..serializers.character import CharacterSerializer
 
 class CharacterViewSet(viewsets.ModelViewSet):
     queryset = Character.objects.all()
+    #queryset.delete()
     serializer_class = CharacterSerializer
