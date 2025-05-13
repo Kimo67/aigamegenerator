@@ -1,7 +1,7 @@
 from django.db import models
 
 class Character(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=1024, unique=True)
     description = models.TextField(blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
     hexcolor = models.CharField(max_length=32,blank=True, null=True)

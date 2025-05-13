@@ -103,7 +103,7 @@ def add_case_to_story(cases, story_node):
 
         # Attach additional info
         node.scene = case.get("background", "")
-        node.repliques = [case.get("description", "")] if case.get("description") else []
+        node.repliques = [case.get("repliques", "")] if case.get("repliques") else []
         node.id = case.get("id")
         # Store the case ID in the node's session or scene if needed
         node.session = {"id": case["id"]}

@@ -1,28 +1,30 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Block } from './core/models/block.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ApiService {
-  private baseUrl = 'https://localhost:8080'; 
-
+  private readonly baseUrl = 'http://localhost:8001/api';
   constructor(private http: HttpClient) {}
 
-  getData(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/data`);
+  getCases(): Observable<Block[]> {
+    return this.http.get<Block[]>(this.baseUrl);
   }
 
-  postData(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/data`, data);
+  createCase(payload: Partial<Block>): Observable<Block> {
+    return this.http.post<Block>(`${this.baseUrl}/case/`, payload);
   }
 
-  updateData(id: number, data: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/data/${id}`, data);
+  getCase(id: number): Observable<Block> {
+    return this.http.get<Block>(`${this.baseUrl}${id}/`);
   }
 
-  deleteData(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/data/${id}`);
+  updateCase(id: number, block: Partial<Block>): Observable<Block> {
+    return this.http.put<Block>(`${this.baseUrl}${id}/`, block);
+  }
+
+  deleteCase(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}${id}/`);
   }
 }

@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   db:
     image: postgres:17
@@ -7,6 +9,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
     env_file:
       - .env.prod
+    networks:
+      - app-network
 
   backend:
     build: .
@@ -19,6 +23,8 @@ services:
       - .env.prod
     ports:
       - "8001:8001"
+    networks:
+      - app-network
 
   frontend:
     build:
@@ -29,17 +35,25 @@ services:
       - "8080:80"
     volumes:
       - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - app-network
 
-  ai_script:  #
+  ai_script:
     build:
-      context: ai_script  # On va chercher dans le dossier ai_script
+      context: ai_script
       dockerfile: Dockerfile
     container_name: ai-script-app
     ports:
-      - "8050:8050"  # 8050 dehors -> 8050 dans le container
+      - "8050:8050"
     volumes:
-      - ./ai_script:/app  # (optionnel mais pratique pour faire du hot reload)
+      - ./ai_script:/app
     command: uvicorn main:app --host 0.0.0.0 --port 8050 --reload
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

@@ -48,22 +48,22 @@
       </div>
     
       <div *ngFor="let reply of block.replies" class="reply-line">
-        <select [(ngModel)]="reply.character">
-          <option>Personnage 1</option>
-          <option>Personnage 2</option>
-          <option>Personnage 3</option>
+        <select [(ngModel)]="reply.personnage">
+          <option>MARIO</option>
+          <option>YOSHI</option>
+          <option>LUIGI</option>
         </select>
-    
-        <input type="text" [(ngModel)]="reply.text" placeholder="Texte de la réplique..." />
-    
-        <select [(ngModel)]="reply.tone">
-          <option>Neutre</option>
-          <option>Émotion</option>
-          <option>Colère</option>
-          <option>Joie</option>
+
+        <input type="text" [(ngModel)]="reply.texte" placeholder="Texte de la réplique..." />
+
+        <select [(ngModel)]="reply.emotion">
+          <option>NEUTRAL</option>
+          <option>ANGRY</option>
+          <option>HAPPY</option>
+          <option>SAD</option>
         </select>
-    
-        <button class="delete-btn" (click)="removeReply(block, reply.id)">🗑️</button>
+
+        <button class="delete-btn" (click)="removeReply(block, reply)">🗑️</button>
       </div>
     </div>    
   </div>

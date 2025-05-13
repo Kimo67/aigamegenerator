@@ -23,6 +23,7 @@ export class BlockComponent implements AfterViewInit {
     {
       id: 1,
       command: '',
+      parentId: null,
       choices: [],
       replies: [],
       position: { x: 50, y: 50 }
@@ -40,26 +41,70 @@ export class BlockComponent implements AfterViewInit {
     setTimeout(() => this.addChoiceHoverListeners(), 150);
   }
 
+
   handleCommandEnter(block: Block) {
+  const prompt = block.command?.trim();
+  if (!prompt) return;
 
-    this.apiService.postData("this is data").subscribe({
-      next: (res) => console.log("Réponse de l'API :", res),
-      error: (err) => console.error("Erreur API :", err)
-    });
+  const payload: Partial<Block> = {
+    prompt,
+    parent: null,
+    title: `Case ${this.nextId}`,
+    story: 1,
+    characters: ['MARIO', 'YOSHI'] // ou dynamiquement
+  };
 
-    const text = block.command?.trim();
-    if (!text) return;
+  this.apiService.createCase(payload).subscribe({
+    next: (created) => {
+      const newChoice = {
+        id: this.generateChoiceId(block.id, block.choices?.length || 0),
+        label: 'Choix ' + (block.choices?.length + 1 || 1)
+      };
 
-    // Simulation d'un retour d'API avec "Choix 1"
-    const newChoiceLabel = 'Choix 1';
-    const newChoice = {
-      id: this.generateChoiceId(block.id, block.choices.length + 1),
-      label: newChoiceLabel
-    };
+      if (!block.choices) block.choices = [];
+      block.choices.push(newChoice);
 
-    block.choices.push(newChoice);
-    block.command = ''; // Réinitialise le champ input
+      this.blocks.push({
+        id: created.id,
+        title: created.title,
+        prompt: created.prompt,
+        replies: created.replies,
+        choices: [],
+        position: this.calculateNewPosition(block),
+        parentId: null,
+        linkedChoiceId: newChoice.id
+      });
+
+      block.command = '';
+    },
+    error: (err) => console.error('Erreur lors de la création de la case', err)
+  });
+}
+
+calculateNewPosition(parent: Block): { x: number; y: number } {
+  const parentEl = document.getElementById(`block-${parent.id}`);
+  const parentWidth = parentEl?.offsetWidth || 320;
+  const parentHeight = parentEl?.offsetHeight || 300;
+
+  const baseX = (parent.position?.x || 0) + parentWidth + 80;
+  const parentY = parent.position?.y || 0;
+
+  let yOffset = 0;
+  let x = baseX;
+  let y = parentY + yOffset;
+  let positionKey = `${x},${y}`;
+  const verticalSpacing = parentHeight + 60;
+
+  while (this.occupiedPositions.has(positionKey)) {
+    yOffset += verticalSpacing;
+    y = parentY + yOffset;
+    positionKey = `${x},${y}`;
   }
+
+  this.occupiedPositions.add(positionKey);
+  return { x, y };
+}
+
 
   addBlock(parentId: number) {
     const parent = this.blocks.find(b => b.id === parentId);
@@ -316,16 +361,18 @@ export class BlockComponent implements AfterViewInit {
   
   addReply(block: Block) {
     const newReply = {
-      id: this.generateReplyId(block.id, block.replies!.length + 1),
-      character: 'Personnage 1',
-      text: '',
-      tone: 'Neutre'
+      texte: '',
+      emotion: 'NEUTRAL',
+      personnage: 'Personnage 1'
     };
-    block.replies!.push(newReply);
+
+    block.replies.push(newReply);
   }
-  
-  removeReply(block: Block, replyId: string) {
-    block.replies = block.replies!.filter(r => r.id !== replyId);
+
+    removeReply(block: Block, replyToRemove: any) {
+    block.replies = block.replies.filter(reply =>
+      reply !== replyToRemove
+    );
   }
-  
+
 }
