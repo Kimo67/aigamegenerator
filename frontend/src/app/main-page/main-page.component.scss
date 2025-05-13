@@ -9,9 +9,11 @@
 .flex-container {
   min-height: 100vh;
   max-height: 100vh;
-  overflow-y: auto;
+  overflow: hidden; /* Empêche les débordements */
+  box-sizing: border-box; /* Inclut les paddings et bordures dans la hauteur totale */
+  padding: 0;
+  margin: 0;
 }
-
 /* Animation pour les particules - réduites en amplitude */
 @keyframes float {
   0% {
@@ -48,8 +50,9 @@
   position: relative;
   width: 100%;
   text-align: center;
+  overflow: hidden;
+  white-space: nowrap; /* Empêche le texte de dépasser horizontalement */
 }
-
 /* Styles pour les icônes Bootstrap */
 .icon-large {
   font-size: 2.5rem; /* Taille icône principale */
@@ -69,7 +72,7 @@
 }
 
 .text-green-200 {
-  color: #a7f3d0;
+  color: #A5D6A7;
 }
 
 /* Ajustements pour les icônes dans les cartes thématiques */
@@ -327,9 +330,17 @@
 .max-w-4xl {
   max-width: 56rem;
 }
-
+.mb-8 {
+  margin-bottom: 2rem;
+}
 .gap-6 {
   gap: 1.5rem;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
+.gap-4 {
+  gap: 0.9rem;
 }
 
 .bg-white {

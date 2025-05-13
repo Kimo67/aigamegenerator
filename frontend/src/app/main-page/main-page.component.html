@@ -1,16 +1,16 @@
 <div [ngClass]="currentTheme.bgClass" class="flex-container flex flex-col items-center justify-center relative overflow-hidden p-4">
   <!-- Animated particles -->
   <div 
-    *ngFor="let particle of currentTheme.particles"
-    class="absolute bg-white rounded-full opacity-50"
-    [ngStyle]="{
-      'left': particle.x + '%',
-      'top': particle.y + '%',
-      'width': particle.size + 'px',
-      'height': particle.size + 'px',
-      'animation': 'float ' + (5 + particle.speed * 10) + 's infinite linear'
-    }">
-  </div>
+  *ngFor="let particle of currentTheme.particles"
+  class="absolute bg-white rounded-full opacity-50"
+  [ngStyle]="{
+    'left': particle.x + '%',
+    'top': particle.y + '%',
+    'width': particle.size + 'px',
+    'height': particle.size + 'px',
+    'animation': 'float ' + (5 + particle.speed * 10) + 's infinite linear'
+  }">
+</div>
   
   <div class="relative z-10 text-center mb-8">
     <div class="flex justify-center mb-3">
@@ -24,31 +24,31 @@
     </p>
   </div>
   
-  <div class="flex flex-wrap justify-center gap-6 max-w-4xl mb-8">
+  <div class="flex flex-wrap justify-center gap-4 mb-8">
     <div 
-      class="bg-gradient-to-br from-purple-600 to-indigo-700 p-6 rounded-xl shadow-lg w-64 cursor-pointer transform transition-all hover:scale-105 hover:shadow-xl"
+      class="bg-gradient-to-br from-purple-600 to-indigo-700 p-6 rounded-xl shadow-lg w-64  transform transition-all hover:scale-105 hover:shadow-xl"
       (mouseenter)="setActiveTheme('fantasy')"
       (mouseleave)="setActiveTheme(null)">
       <div class="bg-white/20 rounded-full p-2 w-12 h-12 flex items-center justify-center mb-4 text-white">
         <i class="bi bi-stars"></i>
       </div>
-      <h3 class="text-xl font-bold text-white mb-2">Fantasy</h3>
+      <h3 class="text-xl font-bold text-white mb-2">Fantaisie</h3>
       <p class="text-white/80 text-sm">Des royaumes enchantés et des créatures magiques</p>
     </div>
     
     <div 
-      class="bg-gradient-to-br from-cyan-600 to-blue-700 p-6 rounded-xl shadow-lg w-64 cursor-pointer transform transition-all hover:scale-105 hover:shadow-xl"
+      class="bg-gradient-to-br from-cyan-600 to-blue-700 p-6 rounded-xl shadow-lg w-64  transform transition-all hover:scale-105 hover:shadow-xl"
       (mouseenter)="setActiveTheme('scifi')"
       (mouseleave)="setActiveTheme(null)">
       <div class="bg-white/20 rounded-full p-2 w-12 h-12 flex items-center justify-center mb-4 text-white">
         <i class="bi bi-lightning-charge-fill"></i>
       </div>
-      <h3 class="text-xl font-bold text-white mb-2">Sci-Fi</h3>
+      <h3 class="text-xl font-bold text-white mb-2">Science-Fiction</h3>
       <p class="text-white/80 text-sm">Explorez l'espace et les technologies futures</p>
     </div>
     
     <div 
-      class="bg-gradient-to-br from-green-600 to-yellow-700 p-6 rounded-xl shadow-lg w-64 cursor-pointer transform transition-all hover:scale-105 hover:shadow-xl"
+      class="bg-gradient-to-br from-green-600 to-yellow-700 p-6 rounded-xl shadow-lg w-64  transform transition-all hover:scale-105 hover:shadow-xl"
       (mouseenter)="setActiveTheme('adventure')"
       (mouseleave)="setActiveTheme(null)">
       <div class="bg-white/20 rounded-full p-2 w-12 h-12 flex items-center justify-center mb-4 text-white">
