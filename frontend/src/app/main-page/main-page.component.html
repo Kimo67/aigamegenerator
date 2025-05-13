@@ -14,7 +14,7 @@
   
   <div class="relative z-10 text-center mb-8">
     <div class="flex justify-center mb-3">
-      <span [innerHTML]="getSafeIcon(activeTheme ? currentTheme.icon : sunIcon)"></span>
+      <i [class]="activeTheme ? currentTheme.icon : defaultIcon" class="text-yellow-300 icon-large"></i>
     </div>
     <h1 class="text-5xl font-bold text-white mb-4 tracking-wider shadow-text">
       AI GAME GENERATOR
@@ -30,7 +30,7 @@
       (mouseenter)="setActiveTheme('fantasy')"
       (mouseleave)="setActiveTheme(null)">
       <div class="bg-white/20 rounded-full p-2 w-12 h-12 flex items-center justify-center mb-4 text-white">
-        <span [innerHTML]="getSafeIcon(themes['fantasy'].icon)"></span>
+        <i class="bi bi-stars"></i>
       </div>
       <h3 class="text-xl font-bold text-white mb-2">Fantasy</h3>
       <p class="text-white/80 text-sm">Des royaumes enchantés et des créatures magiques</p>
@@ -41,7 +41,7 @@
       (mouseenter)="setActiveTheme('scifi')"
       (mouseleave)="setActiveTheme(null)">
       <div class="bg-white/20 rounded-full p-2 w-12 h-12 flex items-center justify-center mb-4 text-white">
-        <span [innerHTML]="getSafeIcon(themes['scifi'].icon)"></span>
+        <i class="bi bi-lightning-charge-fill"></i>
       </div>
       <h3 class="text-xl font-bold text-white mb-2">Sci-Fi</h3>
       <p class="text-white/80 text-sm">Explorez l'espace et les technologies futures</p>
@@ -52,7 +52,7 @@
       (mouseenter)="setActiveTheme('adventure')"
       (mouseleave)="setActiveTheme(null)">
       <div class="bg-white/20 rounded-full p-2 w-12 h-12 flex items-center justify-center mb-4 text-white">
-        <span [innerHTML]="getSafeIcon(themes['adventure'].icon)"></span>
+      <i class="bi bi-compass"></i>
       </div>
       <h3 class="text-xl font-bold text-white mb-2">Aventure</h3>
       <p class="text-white/80 text-sm">Partez à la découverte de contrées lointaines</p>
@@ -62,7 +62,7 @@
   <button class="bg-white text-green-800 hover:bg-green-50 px-8 py-3 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105" [routerLink]="['/new-story']">
     CRÉER UNE HISTOIRE
   </button>
-  
+
   <div class="footer-text text-white opacity-70 tracking-wide">
     Chaque histoire est unique • Alimenté par l'IA • Personnalisable à l'infini
   </div>
