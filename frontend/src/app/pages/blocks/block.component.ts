@@ -1,16 +1,22 @@
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
-import { NgFor } from "@angular/common";
+import { NgFor, NgIf } from "@angular/common";
 import { FormsModule } from '@angular/forms';
 import { Block } from '../../core/models/block.model';
+import { ApiService } from '../../api.service';
 
 @Component({
   selector: 'app-block',
   standalone: true,
-  imports: [NgFor, FormsModule],
+  imports: [NgFor, NgIf, FormsModule],
   templateUrl: './block.component.html',
   styleUrls: ['./block.component.scss']
 })
 export class BlockComponent implements AfterViewInit {
+
+  currentOpenChoiceId: string | null = null;
+
+  constructor(private apiService: ApiService) { }
+
   nextId = 2;
 
   blocks: Block[] = [
@@ -18,9 +24,11 @@ export class BlockComponent implements AfterViewInit {
       id: 1,
       command: '',
       choices: [],
+      replies: [],
       position: { x: 50, y: 50 }
     }
   ];
+  
 
   lines: { line: any, linkedChoiceId: string }[] = [];
   occupiedPositions: Set<string> = new Set();
@@ -33,6 +41,12 @@ export class BlockComponent implements AfterViewInit {
   }
 
   handleCommandEnter(block: Block) {
+
+    this.apiService.postData("this is data").subscribe({
+      next: (res) => console.log("Réponse de l'API :", res),
+      error: (err) => console.error("Erreur API :", err)
+    });
+
     const text = block.command?.trim();
     if (!text) return;
 
@@ -69,6 +83,7 @@ export class BlockComponent implements AfterViewInit {
       parentId,
       command: '',
       choices: [],
+      replies: [],
       position: { x, y }
     });
 
@@ -83,47 +98,63 @@ export class BlockComponent implements AfterViewInit {
   addBlockFromChoice(parentBlockId: number, choiceId: string) {
     const parent = this.blocks.find(b => b.id === parentBlockId);
     if (!parent) return;
-
+  
     const alreadyLinked = this.blocks.some(
       b => b.parentId === parentBlockId && b.linkedChoiceId === choiceId
     );
     if (alreadyLinked) return;
-
-    const baseX = (parent.position?.x || 0) + 320;
-    let baseY = parent.position?.y || 0;
-
+  
+    const parentElement = document.getElementById(`block-${parentBlockId}`);
+    const parentWidth = parentElement?.offsetWidth || 320;
+    const parentHeight = parentElement?.offsetHeight || 300;
+  
+    const baseX = (parent.position?.x || 0) + parentWidth + 80;
+    const parentY = parent.position?.y || 0;
+  
     let yOffset = 0;
-    let positionKey = `${baseX},${baseY + yOffset}`;
+    let x = baseX;
+    let y = parentY + yOffset;
+    let positionKey = `${x},${y}`;
+    const verticalSpacing = parentHeight + 60;
+  
     while (this.occupiedPositions.has(positionKey)) {
-      yOffset += 280;
-      positionKey = `${baseX},${baseY + yOffset}`;
+      yOffset += verticalSpacing;
+      y = parentY + yOffset;
+      positionKey = `${x},${y}`;
     }
-
-    const x = baseX;
-    const y = baseY + yOffset;
-
+  
     const newBlock: Block = {
       id: this.nextId++,
       parentId: parentBlockId,
       linkedChoiceId: choiceId,
       command: '',
       choices: [],
+      replies: [],
       position: { x, y }
     };
-
+  
     this.blocks.push(newBlock);
+    this.scrollToBlock(newBlock.id);
     this.occupiedPositions.add(positionKey);
-
+  
     setTimeout(() => {
       this.updateLines();
       this.addChoiceHoverListeners();
     }, 50);
-  }
+  }   
 
   generateChoiceId(blockId: number, index: number): string {
     return `choice-${blockId}-${index}-${Math.floor(Math.random() * 100000)}`;
   }
 
+  addChoice(block: Block) {
+    const newChoice = {
+      id: this.generateChoiceId(block.id, block.choices.length + 1),
+      label: 'Choix ' + (block.choices.length + 1)
+    };
+    block.choices.push(newChoice);
+  }
+  
   removeChoice(blockId: number, choiceId: string) {
     const block = this.blocks.find(b => b.id === blockId);
     if (!block) return;
@@ -244,4 +275,57 @@ export class BlockComponent implements AfterViewInit {
   getBlockBorderColor(block: Block): string {
     return block.parentId ? this.getColorForParent(block.parentId) : 'black';
   }
+  
+  stopEditingChoice(choice: any) {
+    choice.editing = false;
+  }
+
+  toggleSettings(choice: any) {
+    if (this.currentOpenChoiceId === choice.id) {
+      this.currentOpenChoiceId = null; 
+    } else {
+      this.currentOpenChoiceId = choice.id;
+    }
+  }
+  
+  startEditingChoice(choice: any) {
+    choice.editing = true;
+    choice.openSettings = false;
+  }
+  
+  scrollToBlock(blockId: number) {
+    setTimeout(() => {
+      const element = document.getElementById(`block-${blockId}`);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        const scrollTop = window.scrollY + rect.top - window.innerHeight / 2 + rect.height / 2;
+        const scrollLeft = window.scrollX + rect.left - window.innerWidth / 2 + rect.width / 2;
+  
+        window.scrollTo({
+          top: scrollTop,
+          left: scrollLeft,
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
+  }
+  
+  generateReplyId(blockId: number, index: number): string {
+    return `reply-${blockId}-${index}-${Math.floor(Math.random() * 100000)}`;
+  }
+  
+  addReply(block: Block) {
+    const newReply = {
+      id: this.generateReplyId(block.id, block.replies!.length + 1),
+      character: 'Personnage 1',
+      text: '',
+      tone: 'Neutre'
+    };
+    block.replies!.push(newReply);
+  }
+  
+  removeReply(block: Block, replyId: string) {
+    block.replies = block.replies!.filter(r => r.id !== replyId);
+  }
+  
 }

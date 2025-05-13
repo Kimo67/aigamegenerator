@@ -15,16 +15,56 @@
       (keyup.enter)="handleCommandEnter(block)"
       placeholder="Entrez un prompt..."
     />
+
+    <div class="section-header">
+      <h4>Choix</h4>
+      <button (click)="addChoice(block)">➕</button>
+    </div>    
     <div
       *ngFor="let choice of block.choices; let i = index"
       class="choice"
       [id]="choice.id"
+      style="position: relative;"
     >
       <label>
         {{ choice.label }}
       </label>
-      <button class="delete-btn" (click)="removeChoice(block.id, choice.id)">🗑</button>
-      <button class="link-btn" (click)="addBlockFromChoice(block.id, choice.id)">➕</button>
+      <div class="choice-actions">
+        <button class="link-btn" (click)="addBlockFromChoice(block.id, choice.id)">➕</button>
+        <div class="settings-wrapper">
+          <button class="settings-btn" (click)="toggleSettings(choice)">⚙️</button>
+          <div *ngIf="currentOpenChoiceId === choice.id" class="settings-panel">
+            <button (click)="startEditingChoice(choice)">✏️ Modifier</button>
+            <button (click)="removeChoice(block.id, choice.id)">🗑️ Supprimer</button>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div class="replies-section">
+      <div class="replies-header">
+        <strong>Répliques</strong>
+        <button (click)="addReply(block)">➕</button>
+      </div>
+    
+      <div *ngFor="let reply of block.replies" class="reply-line">
+        <select [(ngModel)]="reply.character">
+          <option>Personnage 1</option>
+          <option>Personnage 2</option>
+          <option>Personnage 3</option>
+        </select>
+    
+        <input type="text" [(ngModel)]="reply.text" placeholder="Texte de la réplique..." />
+    
+        <select [(ngModel)]="reply.tone">
+          <option>Neutre</option>
+          <option>Émotion</option>
+          <option>Colère</option>
+          <option>Joie</option>
+        </select>
+    
+        <button class="delete-btn" (click)="removeReply(block, reply.id)">🗑️</button>
+      </div>
+    </div>    
   </div>
 </div>

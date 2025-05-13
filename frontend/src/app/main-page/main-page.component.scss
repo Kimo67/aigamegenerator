@@ -1,0 +1,68 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: white;
+  }
+  
+  .container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .language-select {
+    text-align: right;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .logo .title {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 0;
+    color: green;
+  }
+  
+  .logo .subtitle {
+    font-style: italic;
+    margin-top: 10px;
+  }
+  
+  .buttons {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .btn {
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid;
+    border-radius: 25px;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .green { border-color: #00b050; color: #00b050; }
+  
+  .links {
+    margin-top: 30px;
+    font-size: 14px;
+  }
+  
+  .links a {
+    display: block;
+    color: black;
+    text-decoration: underline;
+    margin: 5px 0;
+  }
+
+  .btn.green:hover {
+    background-color: #00b050;
+    color: white;
+  }
+  
+  
