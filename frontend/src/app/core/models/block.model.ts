@@ -33,7 +33,7 @@ export interface Choice {
   editing?: boolean;
 }
 
-export interface Block {
+export interface Case {
   id: number;
   title?: string;
   prompt?: string;
@@ -43,7 +43,11 @@ export interface Block {
   parent?: number | null;
   linkedChoiceId?: string;
   choices: Choice[];
-  replies: Reply[];
+  repliques: Reply[];
   position?: { x: number; y: number };
   characters?: string[];
+}
+
+export interface Character {
+  name: string,
 }
