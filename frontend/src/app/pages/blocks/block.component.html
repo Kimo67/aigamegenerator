@@ -44,14 +44,14 @@
     <div class="replies-section">
       <div class="replies-header">
         <strong>Répliques</strong>
-        <button (click)="addReply(block)">➕</button>
+        <button (click)="addNewReply(block)">➕</button>
       </div>
     
-      <div *ngFor="let reply of block.replies" class="reply-line">
+      <div *ngFor="let reply of block.repliques" class="reply-line">
         <select [(ngModel)]="reply.personnage">
-          <option>MARIO</option>
-          <option>YOSHI</option>
-          <option>LUIGI</option>
+          <option *ngFor="let personnage of personnages">
+            {{ personnage }}
+          </option>
         </select>
 
         <input type="text" [(ngModel)]="reply.texte" placeholder="Texte de la réplique..." />

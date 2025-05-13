@@ -1,8 +1,9 @@
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { NgFor, NgIf } from "@angular/common";
 import { FormsModule } from '@angular/forms';
-import { Block } from '../../core/models/block.model';
+import { Case, Reply } from '../../core/models/block.model';
 import { ApiService } from '../../api.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-block',
@@ -13,23 +14,25 @@ import { ApiService } from '../../api.service';
 })
 export class BlockComponent implements AfterViewInit {
 
+  personnages: string[] = [];
+
   currentOpenChoiceId: string | null = null;
 
   constructor(private apiService: ApiService) { }
 
   nextId = 2;
 
-  blocks: Block[] = [
+  blocks: Case[] = [
     {
       id: 1,
       command: '',
       parentId: null,
       choices: [],
-      replies: [],
+      repliques: [],
       position: { x: 50, y: 50 }
     }
   ];
-  
+
 
   lines: { line: any, linkedChoiceId: string }[] = [];
   occupiedPositions: Set<string> = new Set();
@@ -42,68 +45,66 @@ export class BlockComponent implements AfterViewInit {
   }
 
 
-  handleCommandEnter(block: Block) {
-  const prompt = block.command?.trim();
-  if (!prompt) return;
+  async handleCommandEnter(block: Case) {
+    const prompt = block.command?.trim();
+    if (!prompt) return;
 
-  const payload: Partial<Block> = {
-    prompt,
-    parent: null,
-    title: `Case ${this.nextId}`,
-    story: 1,
-    characters: ['MARIO', 'YOSHI'] // ou dynamiquement
-  };
+    const payload: Partial<Case> = {
+      prompt,
+      parent: null,
+      title: `Case ${this.nextId}`,
+      story: 1,
+      characters: ['MARIO', 'YOSHI']
+    };
 
-  this.apiService.createCase(payload).subscribe({
-    next: (created) => {
+    try {
+      const result = await firstValueFrom(this.apiService.createCase(payload)) as Case;
+  
       const newChoice = {
         id: this.generateChoiceId(block.id, block.choices?.length || 0),
-        label: 'Choix ' + (block.choices?.length + 1 || 1)
+        label: 'Choix ' + ((block.choices?.length ?? 0) + 1)
       };
 
+      const characters = await firstValueFrom(this.apiService.getCharacterList());
+
+      this.personnages = characters.map((character) => character.name);
+  
+      result.repliques?.forEach((replique) => {
+        this.addReply(block, replique)
+      });
+  
       if (!block.choices) block.choices = [];
       block.choices.push(newChoice);
-
-      this.blocks.push({
-        id: created.id,
-        title: created.title,
-        prompt: created.prompt,
-        replies: created.replies,
-        choices: [],
-        position: this.calculateNewPosition(block),
-        parentId: null,
-        linkedChoiceId: newChoice.id
-      });
-
+  
       block.command = '';
-    },
-    error: (err) => console.error('Erreur lors de la création de la case', err)
-  });
-}
-
-calculateNewPosition(parent: Block): { x: number; y: number } {
-  const parentEl = document.getElementById(`block-${parent.id}`);
-  const parentWidth = parentEl?.offsetWidth || 320;
-  const parentHeight = parentEl?.offsetHeight || 300;
-
-  const baseX = (parent.position?.x || 0) + parentWidth + 80;
-  const parentY = parent.position?.y || 0;
-
-  let yOffset = 0;
-  let x = baseX;
-  let y = parentY + yOffset;
-  let positionKey = `${x},${y}`;
-  const verticalSpacing = parentHeight + 60;
-
-  while (this.occupiedPositions.has(positionKey)) {
-    yOffset += verticalSpacing;
-    y = parentY + yOffset;
-    positionKey = `${x},${y}`;
+    } catch (err) {
+      console.error('Erreur lors de la création de la case', err);
+    }
   }
 
-  this.occupiedPositions.add(positionKey);
-  return { x, y };
-}
+  calculateNewPosition(parent: Case): { x: number; y: number } {
+    const parentEl = document.getElementById(`block-${parent.id}`);
+    const parentWidth = parentEl?.offsetWidth || 320;
+    const parentHeight = parentEl?.offsetHeight || 300;
+
+    const baseX = (parent.position?.x || 0) + parentWidth + 80;
+    const parentY = parent.position?.y || 0;
+
+    let yOffset = 0;
+    let x = baseX;
+    let y = parentY + yOffset;
+    let positionKey = `${x},${y}`;
+    const verticalSpacing = parentHeight + 60;
+
+    while (this.occupiedPositions.has(positionKey)) {
+      yOffset += verticalSpacing;
+      y = parentY + yOffset;
+      positionKey = `${x},${y}`;
+    }
+
+    this.occupiedPositions.add(positionKey);
+    return { x, y };
+  }
 
 
   addBlock(parentId: number) {
@@ -128,7 +129,7 @@ calculateNewPosition(parent: Block): { x: number; y: number } {
       parentId,
       command: '',
       choices: [],
-      replies: [],
+      repliques: [],
       position: { x, y }
     });
 
@@ -143,63 +144,63 @@ calculateNewPosition(parent: Block): { x: number; y: number } {
   addBlockFromChoice(parentBlockId: number, choiceId: string) {
     const parent = this.blocks.find(b => b.id === parentBlockId);
     if (!parent) return;
-  
+
     const alreadyLinked = this.blocks.some(
       b => b.parentId === parentBlockId && b.linkedChoiceId === choiceId
     );
     if (alreadyLinked) return;
-  
+
     const parentElement = document.getElementById(`block-${parentBlockId}`);
     const parentWidth = parentElement?.offsetWidth || 320;
     const parentHeight = parentElement?.offsetHeight || 300;
-  
+
     const baseX = (parent.position?.x || 0) + parentWidth + 80;
     const parentY = parent.position?.y || 0;
-  
+
     let yOffset = 0;
     let x = baseX;
     let y = parentY + yOffset;
     let positionKey = `${x},${y}`;
     const verticalSpacing = parentHeight + 60;
-  
+
     while (this.occupiedPositions.has(positionKey)) {
       yOffset += verticalSpacing;
       y = parentY + yOffset;
       positionKey = `${x},${y}`;
     }
-  
-    const newBlock: Block = {
+
+    const newBlock: Case = {
       id: this.nextId++,
       parentId: parentBlockId,
       linkedChoiceId: choiceId,
       command: '',
       choices: [],
-      replies: [],
+      repliques: [],
       position: { x, y }
     };
-  
+
     this.blocks.push(newBlock);
     this.scrollToBlock(newBlock.id);
     this.occupiedPositions.add(positionKey);
-  
+
     setTimeout(() => {
       this.updateLines();
       this.addChoiceHoverListeners();
     }, 50);
-  }   
+  }
 
   generateChoiceId(blockId: number, index: number): string {
     return `choice-${blockId}-${index}-${Math.floor(Math.random() * 100000)}`;
   }
 
-  addChoice(block: Block) {
+  addChoice(block: Case) {
     const newChoice = {
       id: this.generateChoiceId(block.id, block.choices.length + 1),
       label: 'Choix ' + (block.choices.length + 1)
     };
     block.choices.push(newChoice);
   }
-  
+
   removeChoice(blockId: number, choiceId: string) {
     const block = this.blocks.find(b => b.id === blockId);
     if (!block) return;
@@ -317,27 +318,27 @@ calculateNewPosition(parent: Block): { x: number; y: number } {
     return this.parentColors.get(parentId)!;
   }
 
-  getBlockBorderColor(block: Block): string {
+  getBlockBorderColor(block: Case): string {
     return block.parentId ? this.getColorForParent(block.parentId) : 'black';
   }
-  
+
   stopEditingChoice(choice: any) {
     choice.editing = false;
   }
 
   toggleSettings(choice: any) {
     if (this.currentOpenChoiceId === choice.id) {
-      this.currentOpenChoiceId = null; 
+      this.currentOpenChoiceId = null;
     } else {
       this.currentOpenChoiceId = choice.id;
     }
   }
-  
+
   startEditingChoice(choice: any) {
     choice.editing = true;
     choice.openSettings = false;
   }
-  
+
   scrollToBlock(blockId: number) {
     setTimeout(() => {
       const element = document.getElementById(`block-${blockId}`);
@@ -345,7 +346,7 @@ calculateNewPosition(parent: Block): { x: number; y: number } {
         const rect = element.getBoundingClientRect();
         const scrollTop = window.scrollY + rect.top - window.innerHeight / 2 + rect.height / 2;
         const scrollLeft = window.scrollX + rect.left - window.innerWidth / 2 + rect.width / 2;
-  
+
         window.scrollTo({
           top: scrollTop,
           left: scrollLeft,
@@ -354,23 +355,27 @@ calculateNewPosition(parent: Block): { x: number; y: number } {
       }
     }, 100);
   }
-  
+
   generateReplyId(blockId: number, index: number): string {
     return `reply-${blockId}-${index}-${Math.floor(Math.random() * 100000)}`;
   }
-  
-  addReply(block: Block) {
+
+  addNewReply(block: Case) {
     const newReply = {
       texte: '',
       emotion: 'NEUTRAL',
       personnage: 'Personnage 1'
     };
 
-    block.replies.push(newReply);
+    block.repliques.push(newReply);
   }
 
-    removeReply(block: Block, replyToRemove: any) {
-    block.replies = block.replies.filter(reply =>
+  addReply(block: Case, reply: Reply) {
+    block.repliques.push(reply);
+  }
+
+  removeReply(block: Case, replyToRemove: any) {
+    block.repliques = block.repliques.filter(reply =>
       reply !== replyToRemove
     );
   }
