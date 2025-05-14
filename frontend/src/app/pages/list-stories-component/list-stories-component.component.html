@@ -1,0 +1,10 @@
+<div class="story-container" *ngIf="stories.length > 0; else noStories">
+    <div class="story-card" *ngFor="let story of stories">
+        <h2>{{ story.name }}</h2>
+        <p>ID : {{ story.id }}</p>
+    </div>
+</div>
+
+<ng-template #noStories>
+    <p class="empty">Aucune histoire à afficher.</p>
+</ng-template>
