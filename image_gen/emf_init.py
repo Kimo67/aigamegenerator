@@ -75,6 +75,8 @@ def generate_background(prompt: str) -> str:
     pipe.enable_attention_slicing()
 
     img = pipe(prompt, num_inference_steps=STEPS, guidance_scale=GUIDANCE, height=600, width=800).images[0]
+    
+    ####### MODIFIER CETTE LIGNE POUR LE CHEMIN EXACT OU ON ENREGISTRE L'IMAGE ######
     output_path = Path.cwd() / "generated.png"
     img.save(output_path)
     print(f"✅ {output_path.name} sauvegardée")
