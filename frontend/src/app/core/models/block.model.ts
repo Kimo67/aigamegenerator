@@ -51,3 +51,8 @@ export interface Case {
 export interface Character {
   name: string,
 }
+
+export interface Story {
+  id: string,
+  name: string
+}

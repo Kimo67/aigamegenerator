@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Case, Character } from './core/models/block.model';
+import { Case, Character, Story } from './core/models/block.model';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private readonly baseUrl = 'http://localhost:8001/api';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   createCase(payload: Partial<Case>): Observable<Case> {
     return this.http.post<Case>(`${this.baseUrl}/case/`, payload);
@@ -14,5 +14,9 @@ export class ApiService {
 
   getCharacterList(): Observable<Character[]> {
     return this.http.get<Character[]>(`${this.baseUrl}/characters`);
+  }
+
+  getStories(): Observable<Story[]> {
+    return this.http.get<Story[]>(`${this.baseUrl}/stories`)
   }
 }
