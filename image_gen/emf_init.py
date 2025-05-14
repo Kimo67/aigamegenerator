@@ -59,21 +59,26 @@ def add_model():
     if res.returncode not in (0,1): res.check_returncode()
 
 # 5. Génération fond VN -------------------------
-def generate_background(prompt:str):
-    act=Path(PROJECT)/".venv/bin/activate_this.py"
-    if act.exists(): exec(act.read_text(),{"__file__":str(act)})
+def generate_background(prompt: str) -> str:
+    act = Path(PROJECT) / ".venv/bin/activate_this.py"
+    if act.exists():
+        exec(act.read_text(), {"__file__": str(act)})
 
     import torch
     from diffusers import StableDiffusionPipeline, EulerAncestralDiscreteScheduler
 
     device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 
-    pipe=StableDiffusionPipeline.from_pretrained(MODEL_ID, torch_dtype=torch.float32, safety_checker=None)
-    pipe.scheduler=EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
-    pipe.to(device); pipe.enable_attention_slicing()
+    pipe = StableDiffusionPipeline.from_pretrained(MODEL_ID, torch_dtype=torch.float32, safety_checker=None)
+    pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
+    pipe.to(device)
+    pipe.enable_attention_slicing()
 
-    img=pipe(prompt, num_inference_steps=STEPS, guidance_scale=GUIDANCE, height=600, width=800).images[0]
-    img.save("generated.png"); print("✅ generated.png sauvegardée")
+    img = pipe(prompt, num_inference_steps=STEPS, guidance_scale=GUIDANCE, height=600, width=800).images[0]
+    output_path = Path.cwd() / "generated.png"
+    img.save(output_path)
+    print(f"✅ {output_path.name} sauvegardée")
+    return str(output_path.resolve())
 
 # ------------------- main ----------------------
 if __name__ == "__main__":
@@ -102,6 +107,7 @@ if __name__ == "__main__":
     "soft cinematic lighting, vibrant colours, high resolution"
     )
     #Génération fond
-    generate_background(prompt)
+    path = generate_background(prompt)
+    print("Chemin absolu :", path)
 
 
