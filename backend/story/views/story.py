@@ -7,6 +7,7 @@ from ..serializers.story import StorySerializer
 class StoryViewSet(viewsets.ModelViewSet):
     queryset = Story.objects.all()
     serializer_class = StorySerializer
+    #queryset.delete()
 
     def destroy(self, request, *args, **kwargs):
         story = self.get_object()

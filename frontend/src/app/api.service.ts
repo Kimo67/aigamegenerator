@@ -24,4 +24,10 @@ export class ApiService {
     const params = new HttpParams().set('story', storyId.toString());
     return this.http.get<Case[]>(`${this.baseUrl}/case`, { params })
   }
+
+  createStory(name: string) : Observable<Story> {
+    return this.http.post<Story>(`${this.baseUrl}/stories/`, {
+      name
+    })
+  }
 }

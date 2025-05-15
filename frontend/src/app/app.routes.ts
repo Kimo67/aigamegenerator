@@ -5,6 +5,6 @@ import { ListStoriesComponentComponent } from './pages/list-stories-component/li
 
 export const routes: Routes = [
     { path: '', component: MainPageComponent },
-    { path: 'new-story', component: BlockComponent },
+    { path: 'new-story/:id', component: BlockComponent },
     { path: 'load-story', component: ListStoriesComponentComponent }
 ];

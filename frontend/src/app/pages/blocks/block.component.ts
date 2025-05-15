@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Case, Reply } from '../../core/models/block.model';
 import { ApiService } from '../../api.service';
 import { firstValueFrom } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-block',
@@ -16,25 +17,35 @@ export class BlockComponent implements AfterViewInit, OnDestroy {
 
   @Input() personnages: string[] = [];
 
+
   private boundMouseMove = this.onMouseMove.bind(this);
   private boundMouseUp = this.onMouseUp.bind(this);
 
   currentOpenChoiceId: string | null = null;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
 
   nextId = 2;
-  @Input() storyId!: number;
-  @Input() blocks: Case[] = [
-    {
-      id: 1,
-      command: '',
-      parentId: null,
-      choices: [],
-      repliques: [],
-      position: { x: 50, y: 50 }
-    }
-  ];
+  storyId!: number;
+  isLoading : boolean = false;
+  isFinalising : boolean = false;
+  @Input() blocks: Case[] = [];
+
+  ngOnInit(): void {
+
+    this.storyId = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.blocks = [
+      {
+        id: 1,
+        command: '',
+        parentId: null,
+        choices: [],
+        repliques: [],
+        position: { x: 50, y: 50 }
+      }
+    ];
+  }
 
 
   lines: { line: any, linkedChoiceId: string }[] = [];
@@ -59,17 +70,17 @@ export class BlockComponent implements AfterViewInit, OnDestroy {
 
   async handleCommandEnter(block: Case) {
     const prompt = block.command?.trim();
-    if (!prompt) return;
 
     const payload: Partial<Case> = {
       prompt,
       parent: null,
       title: `Case ${this.nextId}`,
-      story: 1,
+      story: this.storyId,
       characters: ['MARIO', 'YOSHI']
     };
 
     try {
+      this.isLoading = true;
       const result = await firstValueFrom(this.apiService.createCase(payload)) as Case;
   
       const newChoice = {
@@ -91,6 +102,9 @@ export class BlockComponent implements AfterViewInit, OnDestroy {
       block.command = '';
     } catch (err) {
       console.error('Erreur lors de la création de la case', err);
+    }
+    finally {
+      this.isLoading = false;
     }
   }
 

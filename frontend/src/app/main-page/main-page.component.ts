@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
+import { ApiService } from '../api.service';
+import { firstValueFrom } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 interface Particle {
   id: number;
   x: number;
@@ -19,12 +21,13 @@ interface Theme {
 @Component({
   selector: 'app-main-page',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
 export class MainPageComponent {
   activeTheme: string | null = null;
+  storyName: string = '';
   
   // Bootstrap Icons - utilisation de classes au lieu de SVG
   themes: Record<string, Theme> = {
@@ -76,8 +79,7 @@ export class MainPageComponent {
 
   // Icône par défaut du soleil
   defaultIcon = 'bi bi-sun-fill';
-  
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private apiService: ApiService, private router: Router) { }
   
   get currentTheme(): Theme {
     return this.activeTheme ? this.themes[this.activeTheme] : this.themes['default'];
@@ -91,5 +93,11 @@ export class MainPageComponent {
   getIconClass(themeKey: string | null): string {
     if (!themeKey) return this.defaultIcon;
     return this.themes[themeKey]?.icon || this.defaultIcon;
+  }
+
+  async goToNewStory(name: string) {
+    if(!name) return
+    const story = await firstValueFrom(this.apiService.createStory(name))
+    this.router.navigate(['/new-story',  story.id]);
   }
 }
