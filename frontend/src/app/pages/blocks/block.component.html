@@ -1,7 +1,9 @@
-<div #blockContainer class="block-container bg-gradient-to-br from-green-600 to-emerald-400">
-  <button class="back-arrow-btn" [routerLink]="['']">
+<div #blockContainer [ngClass]="[showBackButton ? 'to-emerald-400' : 'to-night-blue', 'bg-gradient-to-br', 'block-container', 'from-green-600']">
+  
+  <button *ngIf="showBackButton" class="back-arrow-btn" [routerLink]="['']">
     <i class="bi bi-arrow-left"></i>
   </button>
+  <button class="top-right-btn" (click)="exporterRenpy()">Exporter vers renpy ⬇️</button>
   
   <!-- Conteneur de particules avec classe dédiée -->
   <div class="particles-container"> 
@@ -17,7 +19,6 @@
     </div>
   </div>
 
-  <button class="top-right-btn" (click)="exporterRenpy()">Exporter vers renpy ⬇️</button>
 
   <div *ngFor="let block of blocks" class="block" [id]="'block-' + block.id" [style.left.px]="block.position?.x"
     [style.top.px]="block.position?.y" [style.border]="'2px solid ' + getBlockBorderColor(block)"

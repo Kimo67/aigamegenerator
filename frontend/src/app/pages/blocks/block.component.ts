@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 export class BlockComponent implements AfterViewInit, OnDestroy, OnDestroy {
 
   @Input() personnages: string[] = [];
+  @Input() showBackButton: boolean = true;
 
   particles = Array.from({ length: 30 }, (_, i) => ({
         id: i,
