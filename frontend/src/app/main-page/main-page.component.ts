@@ -27,7 +27,8 @@ interface Theme {
 export class MainPageComponent {
   activeTheme: string | null = null;
   storyName: string = '';
-  
+  EmptyStoryName: boolean = false;
+
   // Bootstrap Icons - utilisation de classes au lieu de SVG
   themes: Record<string, Theme> = {
     fantasy: {
@@ -90,8 +91,12 @@ export class MainPageComponent {
     return this.themes[themeKey]?.icon || this.defaultIcon;
   }
 
-  async goToNewStory(name: string) {
-    if(!name) return
+   async goToNewStory(name: string) {
+    if(!name) {
+      this.EmptyStoryName = true; // Active la classe erreur
+      return;
+    }
+    this.EmptyStoryName = false; // Réinitialise l'erreur si tout va bien
     const story = await firstValueFrom(this.apiService.createStory(name))
     this.router.navigate(['/new-story',  story.id]);
   }

@@ -53,15 +53,19 @@
     </div>
   </div>
 
-  <input 
+ <input 
     id="name" 
     type="text" [(ngModel)]="storyName"
-    placeholder="Entrez le nom de la nouvelle histoire si vous en créez une" 
-    class="story-name-input" />
+    placeholder="Nom de votre histoire (ex: La Quête du Dragon)" 
+    class="story-name-input mb-1"
+    [class.input-error]="EmptyStoryName"
+    (input)="EmptyStoryName = false"
+/>
 
   <button
     class="bg-white mb-4 cursor-pointer text-green-800 hover:bg-green-50 px-8 py-3 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
     (click)="goToNewStory(storyName)">
+    <i class="bi bi-plus"></i>
     CRÉER UNE HISTOIRE
   </button>
   <button
