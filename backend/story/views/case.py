@@ -22,7 +22,7 @@ class CaseViewSet(viewsets.ModelViewSet):
 
         print("ID : " + str(p_id))
 
-        if not prompt or not story_id:
+        if not story_id:
             return Response({"error": "Missing prompt or story ID"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Step 1: Create empty case
@@ -57,6 +57,7 @@ class CaseViewSet(viewsets.ModelViewSet):
             case.prompt = ai_data.get("texte", "")
             case.title = request.data.get("title")
             case.repliques = ai_data.get("répliques")
+            case.background = ai_data.get("scène")
             if(p_id != None):
                 parent_case = Case.objects.get(id=p_id)
                 case.parent = parent_case

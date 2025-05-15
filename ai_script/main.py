@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi import HTTPException
-from model import initialize_model  # Assure-toi que le modèle est importé
+from model import initialize_model, summarize_for_image_prompt  # Assure-toi que le modèle est importé
 from story_node import StoryNode
 import requests
 from pydantic import BaseModel
@@ -14,6 +14,7 @@ import time
 from collections import Counter
 from typing import Dict, Any, Union
 from rpyScript.jsonParser_v2 import convert_json_tree_to_rpy
+from img_gen.emf import install_emf_cli, init_project, patch_sdk, add_model, generate_background
 
 app = FastAPI()
 session = None
@@ -35,6 +36,12 @@ async def startup_event():
     initial_text = "Ceci est le début de notre histoire."
     root_story = StoryNode(initial_text, session=session)
     print(f"Premier nœud de l'histoire créé : {root_story.text}")
+
+    install_emf_cli()
+    init_project()
+    patch_sdk()
+    add_model()
+    print("✅ EMF prêt – génération…")
 ############### API CALL STARTUP
 ############### HAPPENS WHEN API STARTS
 
@@ -172,6 +179,7 @@ async def add_node(request: AddNodeRequest):
     # Create new node and attach it
     new_node = StoryNode(story_part, parent=parent_node, session=session)
     new_node.id = request.id
+    new_node.scene = generate_background(summarize_for_image_prompt(session, new_node.text))
     parent_node.children.append(new_node)
 
     return JSONResponse(new_node.tree_to_dict())
@@ -185,7 +193,7 @@ async def add_node(request: AddNodeRequest):
 ############### ADDS A NODE BASED ON A PROMPT SENT BY FRONTEND WITH POST METHOD - INIT PROMPT
 
 @app.post("/story/add-node-start")
-async def add_node(request: AddNodeRequest):
+async def add_node_start(request: AddNodeRequest):
     global root_story
 
     parent_node = find_node_by_id(root_story, 0)
@@ -193,13 +201,20 @@ async def add_node(request: AddNodeRequest):
         raise HTTPException(status_code=404, detail="Parent node not found.")
 
     prompt_suite = initial_prompt(request.prompt)
-    story_part = generate_text(session, prompt_suite, max_tokens=50)
+    story_part = generate_text(session, prompt_suite, max_tokens=5)
     print("\n--- Nouvelle partie de l'histoire ---\n")
     print(story_part)
 
     # Create new node and attach it
     new_node = StoryNode(story_part, parent=parent_node, session=session)
     new_node.id = request.id
+    print("STEP 1")
+    text = summarize_for_image_prompt(session, new_node.text)
+    print("STEP 2")
+    print(text)
+    new_node.scene = generate_background(text[1:50])
+    print("STEP 3")
+    print(text)
     parent_node.children.append(new_node)
 
     return JSONResponse(content=new_node.tree_to_dict())

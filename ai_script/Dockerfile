@@ -14,7 +14,19 @@ COPY requirements.txt /app/
 # Install the Python dependencies
 RUN pip3 install --no-cache-dir -r requirements.txt
 RUN pip3 install ollama
+RUN pip3 install torch
 RUN curl -fsSL https://ollama.com/install.sh | sh
+# Set Go version
+ENV GOLANG_VERSION=1.22.3
+
+# Download and install Go manually
+RUN curl -LO https://go.dev/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go${GOLANG_VERSION}.linux-amd64.tar.gz && \
+    rm go${GOLANG_VERSION}.linux-amd64.tar.gz
+
+# Add Go to the PATH
+ENV PATH="/usr/local/go/bin:${PATH}"
+RUN apt-get install make
 # Copy the source code into the container
 COPY . /app
 
