@@ -25,6 +25,6 @@ class StoryViewSet(viewsets.ModelViewSet):
     def custom_get(self, request):
         # Custom logic here (e.g. filtered queryset, stats, etc.)
         ai_response = requests.post(
-            "http://ai-script-app:8050/story/add-node",
+            "http://ai-script-app:8050/renpy",
         )
         return Response(ai_response)
