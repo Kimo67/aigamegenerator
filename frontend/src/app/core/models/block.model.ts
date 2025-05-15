@@ -53,6 +53,6 @@ export interface Character {
 }
 
 export interface Story {
-  id: string,
+  id: number,
   name: string
 }

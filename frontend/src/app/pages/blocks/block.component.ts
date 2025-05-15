@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, Input ,OnDestroy } from '@angular/core';
 import { NgFor, NgIf } from "@angular/common";
 import { FormsModule } from '@angular/forms';
 import { Case, Reply } from '../../core/models/block.model';
@@ -14,7 +14,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class BlockComponent implements AfterViewInit, OnDestroy {
 
-  personnages: string[] = [];
+  @Input() personnages: string[] = [];
 
   private boundMouseMove = this.onMouseMove.bind(this);
   private boundMouseUp = this.onMouseUp.bind(this);
@@ -24,8 +24,8 @@ export class BlockComponent implements AfterViewInit, OnDestroy {
   constructor(private apiService: ApiService) { }
 
   nextId = 2;
-
-  blocks: Case[] = [
+  @Input() storyId!: number;
+  @Input() blocks: Case[] = [
     {
       id: 1,
       command: '',
