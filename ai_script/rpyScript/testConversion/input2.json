@@ -1,0 +1,44 @@
+{
+    "characters": {
+        "Eileen": "#c8ffc8",
+        "Bob": "#ffc8ff",
+        "Alice": "#c8c8ff",
+        "Charlie": "#ffffc8"
+    },
+    "script": [
+        { "scene": "bg_cafe" },
+        { "label": "start" },
+        { "show": "Eileen" },
+        { "dialogue": { "character": "Eileen", "text": "Welcome to the café!" } },
+        { "show": "Bob" },
+        { "dialogue": { "character": "Bob", "text": "It's nice to hang out together." } },
+        { "show": "Alice" },
+        { "dialogue": { "character": "Alice", "text": "Yeah, it's been a while!" } },
+        { "show": "Charlie" },
+        { "dialogue": { "character": "Charlie", "text": "I wasn't expecting to see everyone here!" } },
+        { "menu": "What should we do?", "options": [
+            { "text": "Order coffee.", "jump": "coffee_scene" },
+            { "text": "Chat for a while.", "jump": "chat_scene" }
+        ]},
+        { "label": "coffee_scene" },
+        { "show": "Eileen" },
+        { "dialogue": { "character": "Eileen", "text": "Let's order some coffee." } },
+        { "show": "Charlie" },
+        { "dialogue": { "character": "Bob", "text": "I want some tea!" } },
+        { "jump": "after_choice" },
+        { "label": "chat_scene" },
+        { "show": "Bob" },
+        { "dialogue": { "character": "Bob", "text": "I'd love to catch up with everyone!" } },
+        { "jump": "after_choice" },
+        { "label": "after_choice" },
+        { "show": "Alice" },
+        { "dialogue": { "character": "Alice", "text": "This was a great idea!" } },
+        { "show": "Charlie" },
+        { "dialogue": { "character": "Charlie", "text": "Yeah, we should do this more often." } },
+        { "label": "end" },
+        { "scene": "bg_street" },
+        { "show": "Bob" },
+        { "dialogue": { "character": "Bob", "text": "Time to head home." } }
+    ]
+}
+

@@ -17,44 +17,28 @@
     </div>
   </div>
 
-  <div
-    *ngFor="let block of blocks"
-    class="block"
-    [id]="'block-' + block.id"
-    [style.left.px]="block.position?.x"
-    [style.top.px]="block.position?.y"
-    [style.border]="'2px solid ' + getBlockBorderColor(block)"
+  <button class="top-right-btn" (click)="exporterRenpy()">Exporter vers renpy ⬇️</button>
+
+  <div *ngFor="let block of blocks" class="block" [id]="'block-' + block.id" [style.left.px]="block.position?.x"
+    [style.top.px]="block.position?.y" [style.border]="'2px solid ' + getBlockBorderColor(block)"
     (mousedown)="onMouseDown($event, block)"
-  >
+    (mousedown)="onMouseDown($event, block)">
     <p><strong>Bloc {{ block.id }}</strong></p>
-    <input
-      type="text"
-      class="command-input"
-      [(ngModel)]="block.command"
-      (keyup.enter)="handleCommandEnter(block)"
-      placeholder="Entrez un prompt..."
-    />
+    <input type="text" class="command-input" [(ngModel)]="block.command" (keyup.enter)="handleCommandEnter(block)"
+      placeholder="Entrez un prompt..." />
 
     <div class="section-header">
       <h4>Choix</h4>
       <button (click)="addChoice(block)">➕</button>
-    </div>    
-    <div
-      *ngFor="let choice of block.choices; let i = index"
-      class="choice"
-      [id]="choice.id"
-      style="position: relative;"
-    >
+    </div>
+    <div *ngFor="let choice of block.choices; let i = index" class="choice" [id]="choice.id"
+      style="position: relative;">
       <label *ngIf="!choice.editing">
         {{ choice.label }}
       </label>
-      
-      <input *ngIf="choice.editing"
-            [(ngModel)]="choice.label"
-            (blur)="stopEditingChoice(choice)"
-            (keyup.enter)="stopEditingChoice(choice)"
-            class="edit-choice-input"
-      />
+
+      <input *ngIf="choice.editing" [(ngModel)]="choice.label" (blur)="stopEditingChoice(choice)"
+        (keyup.enter)="stopEditingChoice(choice)" class="edit-choice-input" />
       <div class="choice-actions">
         <button class="link-btn" (click)="addBlockFromChoice(block.id, choice.id)">➕</button>
         <div class="settings-wrapper">
@@ -72,7 +56,7 @@
         <strong>Répliques</strong>
         <button (click)="addNewReply(block)">➕</button>
       </div>
-    
+
       <div *ngFor="let reply of block.repliques" class="reply-line">
         <div class="reply-top">
           <select [(ngModel)]="reply.personnage">
@@ -80,28 +64,39 @@
               {{ personnage }}
             </option>
           </select>
-    
+
           <select [(ngModel)]="reply.emotion">
             <option>NEUTRAL</option>
             <option>ANGRY</option>
             <option>HAPPY</option>
             <option>SAD</option>
           </select>
-    
+
           <button class="delete-btn" (click)="removeReply(block, reply)">🗑️</button>
         </div>
-    
-        <textarea
-          class="reply-text"
-          [(ngModel)]="reply.texte"
-          placeholder="Texte de la réplique..."
-        ></textarea>
-    
+
+        <textarea class="reply-text" [(ngModel)]="reply.texte" placeholder="Texte de la réplique..."></textarea>
+
         <hr class="reply-separator" />
       </div>
-    </div>   
+    </div>
     <div class="block-footer">
-      <button class="submit-btn">Envoyer</button>
-    </div>         
+      <button class="submit-btn" (click)="handleCommandEnter(block)" [disabled]="isLoading" [class.loading]="isLoading">
+        <ng-container *ngIf="!isLoading; else loading">
+          Envoyer
+        </ng-container>
+        <ng-template #loading>
+          <span class="spinner"></span> Envoi...
+        </ng-template>
+      </button>
+      <button class="submit-btn spacing-left" (click)="handleCommandEnter(block)" [disabled]="isLoading" [class.loading]="isLoading">
+        <ng-container *ngIf="!isFinalising; else finalize">
+          Finaliser
+        </ng-container>
+        <ng-template #finalize>
+          <span class="spinner"></span> Finalisation
+        </ng-template>
+      </button>
+    </div>
   </div>
 </div>

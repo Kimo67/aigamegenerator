@@ -56,3 +56,9 @@ export interface Story {
   id: number,
   name: string
 }
+
+export interface RenpyResponse {
+  message: string,
+  json_path: string,
+  rpy_path: string
+}

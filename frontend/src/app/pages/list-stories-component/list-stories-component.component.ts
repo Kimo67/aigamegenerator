@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './list-stories-component.component.scss'
 })
 export class ListStoriesComponentComponent {
-  particles = Array.from({ length: 30 }, (_, i) => ({
+particles = Array.from({ length: 30 }, (_, i) => ({
         id: i,
         x: Math.random() * 100,
         y: Math.random() * 100,
