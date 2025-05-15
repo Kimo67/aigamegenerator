@@ -6,6 +6,7 @@
     [style.left.px]="block.position?.x"
     [style.top.px]="block.position?.y"
     [style.border]="'2px solid ' + getBlockBorderColor(block)"
+    (mousedown)="onMouseDown($event, block)"
   >
     <p><strong>Bloc {{ block.id }}</strong></p>
     <input
@@ -26,9 +27,16 @@
       [id]="choice.id"
       style="position: relative;"
     >
-      <label>
+      <label *ngIf="!choice.editing">
         {{ choice.label }}
       </label>
+      
+      <input *ngIf="choice.editing"
+            [(ngModel)]="choice.label"
+            (blur)="stopEditingChoice(choice)"
+            (keyup.enter)="stopEditingChoice(choice)"
+            class="edit-choice-input"
+      />
       <div class="choice-actions">
         <button class="link-btn" (click)="addBlockFromChoice(block.id, choice.id)">➕</button>
         <div class="settings-wrapper">
@@ -48,23 +56,34 @@
       </div>
     
       <div *ngFor="let reply of block.repliques" class="reply-line">
-        <select [(ngModel)]="reply.personnage">
-          <option *ngFor="let personnage of personnages">
-            {{ personnage }}
-          </option>
-        </select>
-
-        <input type="text" [(ngModel)]="reply.texte" placeholder="Texte de la réplique..." />
-
-        <select [(ngModel)]="reply.emotion">
-          <option>NEUTRAL</option>
-          <option>ANGRY</option>
-          <option>HAPPY</option>
-          <option>SAD</option>
-        </select>
-
-        <button class="delete-btn" (click)="removeReply(block, reply)">🗑️</button>
+        <div class="reply-top">
+          <select [(ngModel)]="reply.personnage">
+            <option *ngFor="let personnage of personnages">
+              {{ personnage }}
+            </option>
+          </select>
+    
+          <select [(ngModel)]="reply.emotion">
+            <option>NEUTRAL</option>
+            <option>ANGRY</option>
+            <option>HAPPY</option>
+            <option>SAD</option>
+          </select>
+    
+          <button class="delete-btn" (click)="removeReply(block, reply)">🗑️</button>
+        </div>
+    
+        <textarea
+          class="reply-text"
+          [(ngModel)]="reply.texte"
+          placeholder="Texte de la réplique..."
+        ></textarea>
+    
+        <hr class="reply-separator" />
       </div>
-    </div>    
+    </div>   
+    <div class="block-footer">
+      <button class="submit-btn">Envoyer</button>
+    </div>         
   </div>
 </div>

@@ -6,6 +6,7 @@ node_modules/
 # Angular build output (dist) and Angular CLI cache
 dist/
 .angular/
+package-lock.json
 
 # Temporary files and logs
 npm-debug.log*

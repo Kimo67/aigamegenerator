@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { NgFor, NgIf } from "@angular/common";
 import { FormsModule } from '@angular/forms';
 import { Case, Reply } from '../../core/models/block.model';
@@ -12,9 +12,12 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './block.component.html',
   styleUrls: ['./block.component.scss']
 })
-export class BlockComponent implements AfterViewInit {
+export class BlockComponent implements AfterViewInit, OnDestroy {
 
   personnages: string[] = [];
+
+  private boundMouseMove = this.onMouseMove.bind(this);
+  private boundMouseUp = this.onMouseUp.bind(this);
 
   currentOpenChoiceId: string | null = null;
 
@@ -42,8 +45,17 @@ export class BlockComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.updateLines();
     setTimeout(() => this.addChoiceHoverListeners(), 150);
+    window.addEventListener('mousemove', this.boundMouseMove);
+    window.addEventListener('mouseup', this.boundMouseUp);
+
   }
 
+  ngOnDestroy(): void {
+      this.lines.forEach(item => item.line.remove());
+      this.lines = [];    
+      window.removeEventListener('mousemove', this.boundMouseMove);
+      window.removeEventListener('mouseup', this.boundMouseUp); 
+  }
 
   async handleCommandEnter(block: Case) {
     const prompt = block.command?.trim();
@@ -324,7 +336,7 @@ export class BlockComponent implements AfterViewInit {
 
   stopEditingChoice(choice: any) {
     choice.editing = false;
-  }
+  }  
 
   toggleSettings(choice: any) {
     if (this.currentOpenChoiceId === choice.id) {
@@ -378,6 +390,45 @@ export class BlockComponent implements AfterViewInit {
     block.repliques = block.repliques.filter(reply =>
       reply !== replyToRemove
     );
+  }
+
+  private isDragging = false;
+  private dragOffset = { x: 0, y: 0 };
+  private draggedBlock: Case | null = null;
+
+  onMouseDown(event: MouseEvent, block: Case) {
+    const target = event.target as HTMLElement;
+    const interactiveTags = ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'];
+  
+    if (interactiveTags.includes(target.tagName)) return;
+  
+    this.isDragging = true;
+    this.draggedBlock = block;
+  
+    const element = target.closest('.block') as HTMLElement;
+    const rect = element.getBoundingClientRect();
+  
+    this.dragOffset.x = event.clientX - rect.left;
+    this.dragOffset.y = event.clientY - rect.top;
+  
+    event.preventDefault();
+  }  
+
+  onMouseMove(event: MouseEvent) {
+    if (!this.isDragging || !this.draggedBlock) return;
+
+    const containerRect = this.blockContainer.nativeElement.getBoundingClientRect();
+    const x = event.clientX - containerRect.left - this.dragOffset.x;
+    const y = event.clientY - containerRect.top - this.dragOffset.y;
+
+    this.draggedBlock.position = { x, y };
+
+    this.updateLines();
+  }
+
+  onMouseUp() {
+    this.isDragging = false;
+    this.draggedBlock = null;
   }
 
 }
