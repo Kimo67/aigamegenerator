@@ -15,7 +15,7 @@ class CaseViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         prompt = request.data.get("prompt")
         story_id = request.data.get("story")
-        p_id = request.data.get("parent", 0)
+        p_id = request.data.get("parent", None)
 
         if p_id=="" : 
             p_id = None
