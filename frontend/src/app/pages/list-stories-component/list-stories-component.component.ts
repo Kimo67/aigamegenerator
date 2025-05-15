@@ -4,15 +4,22 @@ import { ApiService } from '../../api.service';
 import { CommonModule } from '@angular/common';
 import { BlockComponent } from '../blocks/block.component';
 import { firstValueFrom } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-list-stories-component',
-  imports: [CommonModule, BlockComponent],
+  imports: [CommonModule, BlockComponent, RouterModule],
   templateUrl: './list-stories-component.component.html',
   styleUrl: './list-stories-component.component.scss'
 })
 export class ListStoriesComponentComponent {
-
+  particles = Array.from({ length: 30 }, (_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: 2 + Math.random() * 3,
+      }));
+      
   stories: Story[] = [];
   selectedStoryId: number | null = null;
   storyBlocks: Case[] = [];

@@ -1,4 +1,22 @@
-<div #blockContainer class="block-container">
+<div #blockContainer class="block-container bg-gradient-to-br from-green-600 to-emerald-400">
+  <button class="back-arrow-btn" [routerLink]="['']">
+    <i class="bi bi-arrow-left"></i>
+  </button>
+  
+  <!-- Conteneur de particules avec classe dédiée -->
+  <div class="particles-container"> 
+    <div 
+      *ngFor="let particle of particles"
+      class="absolute bg-white rounded-full opacity-50"
+      [ngStyle]="{
+        'left': particle.x + '%',
+        'top': particle.y + '%',
+        'width': particle.size + 'px',
+        'height': particle.size + 'px',
+      }">
+    </div>
+  </div>
+
   <div
     *ngFor="let block of blocks"
     class="block"
@@ -87,4 +105,3 @@
     </div>         
   </div>
 </div>
-

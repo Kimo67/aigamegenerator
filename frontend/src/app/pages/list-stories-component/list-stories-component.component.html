@@ -1,18 +1,33 @@
+<div class="Page_container bg-gradient-to-br from-green-600 to-emerald-400">
+  <button [routerLink]="['']">
+    <i class="bi bi-arrow-left"></i>
+  </button>
+  <div 
+    *ngFor="let particle of particles"
+    class="absolute bg-white rounded-full opacity-50"
+    [ngStyle]="{
+      'left': particle.x + '%',
+      'top': particle.y + '%',
+      'width': particle.size + 'px',
+      'height': particle.size + 'px',
+    }">
+</div>
 <div class="story-container" *ngIf="stories.length > 0; else noStories">
-    <div class="story-card" *ngFor="let story of stories" (click)="selectStory(story.id)">
-      <h2>{{ story.name }}</h2>
-      <p>ID : {{ story.id }}</p>
-    </div>
-  </div>
-  
-  <ng-template #noStories>
-    <p class="empty">Aucune histoire à afficher.</p>
-  </ng-template>
-  
-  <!-- Affichage dynamique du composant block -->
-  <app-block *ngIf="selectedStoryId"
-             [blocks]="storyBlocks"
-             [storyId]="selectedStoryId"
-             [personnages]="personnages">
-             
-  </app-block>
+<div class="story-card" *ngFor="let story of stories" (click)="selectStory(story.id)">
+  <h2>{{ story.name }}</h2>
+  <p>ID : {{ story.id }}</p>
+</div>
+</div>
+
+<ng-template #noStories>
+  <p class="empty">Aucune histoire à afficher.</p>
+</ng-template>
+
+<!-- Affichage dynamique du composant block -->
+<app-block *ngIf="selectedStoryId"
+[blocks]="storyBlocks"
+[storyId]="selectedStoryId"
+[personnages]="personnages">
+
+</app-block>
+</div>

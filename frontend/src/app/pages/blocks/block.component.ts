@@ -4,16 +4,24 @@ import { FormsModule } from '@angular/forms';
 import { Case, Reply } from '../../core/models/block.model';
 import { ApiService } from '../../api.service';
 import { firstValueFrom } from 'rxjs';
-
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-block',
   standalone: true,
-  imports: [NgFor, NgIf, FormsModule],
+  imports: [NgFor, NgIf, FormsModule, RouterModule, CommonModule],
   templateUrl: './block.component.html',
   styleUrls: ['./block.component.scss']
 })
 export class BlockComponent implements AfterViewInit, OnDestroy {
 
+  particles = Array.from({ length: 30 }, (_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: 2 + Math.random() * 3,
+      }));
+      
   @Input() personnages: string[] = [];
 
   private boundMouseMove = this.onMouseMove.bind(this);
@@ -32,7 +40,7 @@ export class BlockComponent implements AfterViewInit, OnDestroy {
       parentId: null,
       choices: [],
       repliques: [],
-      position: { x: 50, y: 50 }
+      position: { x: 80, y: 80 }
     }
   ];
 
