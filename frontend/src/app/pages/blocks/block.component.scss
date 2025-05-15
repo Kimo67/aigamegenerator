@@ -133,27 +133,42 @@
   }
 
   .reply-line {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 6px;
+    margin-bottom: 12px;
   
-    select, input {
-      flex: 1 1 auto;
-      min-width: 80px;
-      max-width: 100px;
+    .reply-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+  
+      select {
+        min-width: 100px;
+        padding: 4px;
+      }
+  
+      button {
+        flex: 0 0 auto;
+      }
     }
   
-    input[type="text"] {
-      flex: 2 1 auto;
-      min-width: 100px;
-      max-width: 200px;
+    .reply-text {
+      width: 100%;
+      min-height: 60px;
+      margin-top: 6px;
+      resize: vertical;
+      font-size: 14px;
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-family: sans-serif;
+      box-sizing: border-box;
     }
   
-    button {
-      flex: 0 0 auto;
+    .reply-separator {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 10px 0;
     }
-  }  
+  }    
 }
 
 .add-choice-btn {
@@ -175,4 +190,24 @@
 
 .section-header h4 {
   margin: 0;
+}
+
+.block-footer {
+  margin-top: 15px;
+  text-align: right;
+}
+
+.submit-btn {
+  background-color: #0078FF;
+  color: white;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #005ecb;
+  }
 }
