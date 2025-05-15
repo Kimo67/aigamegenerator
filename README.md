@@ -64,7 +64,7 @@ L’évaluation des performances repose sur des métriques objectives (temps d�
 | Nom                   | Rôle                                   |
 |------------------------|-----------------------------------------|
 | Kalim Moussa           | Chef de projet & IA                    |
-| Mohamed D. Bendriss    | Intégrateur Full-stack & Docker        |
+| Mohamed Driss Bendriss    | Intégrateur Full-stack & Docker        |
 | Marlind Tahiri         | RenPy & Export                         |
 | Assalas Lakrouz        | RenPy & Pipeline `.rpy`                |
 | Bryan Dam              | Backend                                |
