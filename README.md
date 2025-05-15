@@ -55,7 +55,31 @@ L’évaluation des performances repose sur des métriques objectives (temps d�
 
 ## 🚀 Utilisation du projet
 
-> ⚠️ *(Section à compléter : instructions de lancement, exemples de prompt, screenshots, etc.)*
+Ce projet a été conçu pour être lancé très facilement via Docker. Aucune installation complexe n’est requise.
+
+### ✅ Prérequis
+
+* [Docker](https://www.docker.com/) installé sur votre machine
+* [Docker Compose](https://docs.docker.com/compose/) (inclus dans Docker Desktop)
+
+### 🚀 Lancer le projet
+
+Une fois le projet récupéré depuis le depo git, lancez un terminal et exécutez la commande suivante :
+
+```bash
+# Construire les images et lancer les services
+docker-compose build && docker-compose up -d
+```
+
+### 🌐 Accéder à l'interface
+
+Une fois le lancement terminé, ouvrez votre navigateur à l'adresse suivante :
+
+```
+http://localhost:8080/
+```
+
+Vous pouvez désormais générer votre propre visual novel directement depuis l’interface !
 
 ---
 
@@ -77,3 +101,9 @@ L’évaluation des performances repose sur des métriques objectives (temps d�
 ## 📜 Licence
 
 Ce projet est distribué sous licence **MIT**, sauf mention contraire dans les sous-modules externes. Les modèles utilisés restent soumis aux conditions de leurs auteurs respectifs (Ollama, Hugging Face, etc.).
+
+Voici la section à ajouter à la fin du README :
+
+---
+
+## 
