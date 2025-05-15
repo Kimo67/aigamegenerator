@@ -13,6 +13,17 @@
   background-color: #005ecb;
 }
 
+.top-right-btn {
+  position: absolute;
+  top: 10px;
+  z-index: 1000;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .submit-btn.loading,
 .submit-btn:disabled {
   background-color: gray;

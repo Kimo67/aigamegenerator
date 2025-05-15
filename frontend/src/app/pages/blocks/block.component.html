@@ -1,4 +1,6 @@
 <div #blockContainer class="block-container">
+  <button class="top-right-btn" (click)="exporterRenpy()">Exporter vers renpy ⬇️</button>
+
   <div *ngFor="let block of blocks" class="block" [id]="'block-' + block.id" [style.left.px]="block.position?.x"
     [style.top.px]="block.position?.y" [style.border]="'2px solid ' + getBlockBorderColor(block)"
     (mousedown)="onMouseDown($event, block)">
@@ -49,7 +51,7 @@
             <option>ANGRY</option>
             <option>HAPPY</option>
             <option>SAD</option>
-          </select>isFinalising
+          </select>
 
           <button class="delete-btn" (click)="removeReply(block, reply)">🗑️</button>
         </div>

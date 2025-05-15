@@ -9,7 +9,6 @@
     <p class="empty">Aucune histoire à afficher.</p>
   </ng-template>
   
-  <!-- Affichage dynamique du composant block -->
   <app-block *ngIf="selectedStoryId"
              [blocks]="storyBlocks"
              [storyId]="selectedStoryId"

@@ -26,7 +26,7 @@ export class BlockComponent implements AfterViewInit, OnDestroy {
   constructor(private apiService: ApiService, private route: ActivatedRoute) { }
 
   nextId = 2;
-  storyId!: number;
+  @Input() storyId!: number;
   isLoading : boolean = false;
   isFinalising : boolean = false;
   @Input() blocks: Case[] = [];
@@ -443,6 +443,11 @@ export class BlockComponent implements AfterViewInit, OnDestroy {
   onMouseUp() {
     this.isDragging = false;
     this.draggedBlock = null;
+  }
+
+  async exporterRenpy() {
+    const response = await firstValueFrom(this.apiService.exporterRenpy());
+    console.log(`la reponse est ${response}`)
   }
 
 }
