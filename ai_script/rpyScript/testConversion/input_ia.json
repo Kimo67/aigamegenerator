@@ -1,0 +1,109 @@
+{
+  "id": 0,
+  "texte": "Ceci est le début de notre histoire.",
+  "choix_possibles": [
+    
+  ],
+  "personnages": [
+    
+  ],
+  "émotions": [
+    
+  ],
+  "répliques": [
+    
+  ],
+  "scène": "",
+  "children": [
+    {
+      "id": 128,
+      "texte": "$NARRATEUR$ L'histoire se déroule dans le royaume champignon. Un jour, alors que Mario faisait ses courses, il vit des éclairs traverser l'obscurité du ciel.\n\n$MARIO$ : Qu'est-ce qui se passe là-haut ? Je sens quelque chose de pas clean %HAPPY%\n\n$NARRATEUR$ Le ciel s’assombrit, et des hurlements assourdissants sont entendus. Les arbres chancelent sous la pression du malheur.\n\n$MARIO$ : Oh non ! Ce n'est vraiment pas rafraîchissant comme atmosphère ici %ANGRY%\n\n$NARRATEUR$ Mario se dirige vers un bâtiment de style médiéval, semblable à une tour gothique. Des phares jaillissent du sol, illuminant l'entrée.\n\n$MARIO$ : Quoi qu'il arrive, je vais y aller pour voir ce qui se passe %NEUTRAL%\n\n$NARRATEUR$ Une voix soudainement crache dans la nuit :\n\n$ANGELESECTEUR$ (hurlant) Vous ne pouvez pas nous faire ça ! Arrêtez maintenant ou nous serons obligés de vous tuer %HAPPY%\n\n$MARIO$ : Qui est-ce qui parle ? C'est quoi ce bordel ? %NEUTRAL%\n\n$NARRATEUR$ Mario observe l'entrée, des soldats du royaume champignon se mettent en garde, prêts à intervenir.\n\n$ANGELESECTEUR$ (criant) Il est là ! En avant maintenant !\n\n$MARIO$ : T'es quoi ce mec qui sort de nulle part avec sa clique ? %ANGRY%\n\n$NARRATEUR$ Des démons et des humains se rejoignent, leurs armes pointées vers Mario. La tension monte d'un cran.\n\n$ANGELESECTEUR$ (rugissant) Vous êtes ici pour le brasage ! Ne pleurez pas trop tard ! %HAPPY%\n\n$MARIO$ : Quel brasage ? Je n'en sais rien du tout ! Arrêtez de me dire des trucs absurdes ! %ANGRY%",
+      "choix_possibles": [
+        
+      ],
+      "personnages": [
+        "MARIO",
+        "NARRATEUR",
+        "ANGELESECTEUR"
+      ],
+      "émotions": [
+        "ANGRY",
+        "HAPPY",
+        "NEUTRAL"
+      ],
+      "répliques": [
+        {
+          "personnage": "MARIO",
+          "texte": "Qu'est-ce qui se passe là-haut ? Je sens quelque chose de pas clean",
+          "emotion": "HAPPY"
+        },
+        {
+          "personnage": "MARIO",
+          "texte": "Oh non ! Ce n'est vraiment pas rafraîchissant comme atmosphère ici",
+          "emotion": "ANGRY"
+        },
+        {
+          "personnage": "MARIO",
+          "texte": "Quoi qu'il arrive, je vais y aller pour voir ce qui se passe",
+          "emotion": "NEUTRAL"
+        },
+        {
+          "personnage": "MARIO",
+          "texte": "Qui est-ce qui parle ? C'est quoi ce bordel ?",
+          "emotion": "NEUTRAL"
+        },
+        {
+          "personnage": "MARIO",
+          "texte": "T'es quoi ce mec qui sort de nulle part avec sa clique ?",
+          "emotion": "ANGRY"
+        },
+        {
+          "personnage": "MARIO",
+          "texte": "Quel brasage ? Je n'en sais rien du tout ! Arrêtez de me dire des trucs absurdes !",
+          "emotion": "ANGRY"
+        }
+      ],
+      "scène": "",
+      "children": [
+        {
+          "id": 129,
+          "texte": "$ANGELESECTEUR$ (rugissant) Vous ne comprenez rien ! Allons-y maintenant, braves gens ! %ANGRY%\n\n$MARIO$ : Il a dit quoi ? Je veux pas jouer les idiots ici ! %ANGRY%\n\n$NARRATEUR$ Mario regarde Hans approcher lentement. Le visage de Hans est tari d'une mélancolie profonde.\n\n$HANS$ : Pourquoi ne comprenez-vous rien ? Nous venons de l'angelesecteur, le secteur des anges malicieux %NEUTRAL%\n\n$NARRATEUR$ Hans dégage une aura sereine, contrastant avec la nervosité de ses paroles.\n\n$MARIO$ : L'angealessecteur, les anges ? Mais c'est n'importe quoi ! Je ne vois pas ça comme ça. %ANGRY%",
+          "choix_possibles": [
+            
+          ],
+          "personnages": [
+            "ANGELESECTEUR",
+            "NARRATEUR",
+            "MARIO",
+            "HANS"
+          ],
+          "émotions": [
+            "ANGRY",
+            "NEUTRAL"
+          ],
+          "répliques": [
+            {
+              "personnage": "MARIO",
+              "texte": "Il a dit quoi ? Je veux pas jouer les idiots ici !",
+              "emotion": "ANGRY"
+            },
+            {
+              "personnage": "HANS",
+              "texte": "Pourquoi ne comprenez-vous rien ? Nous venons de l'angelesecteur, le secteur des anges malicieux",
+              "emotion": "NEUTRAL"
+            },
+            {
+              "personnage": "MARIO",
+              "texte": "L'angealessecteur, les anges ? Mais c'est n'importe quoi ! Je ne vois pas ça comme ça.",
+              "emotion": "ANGRY"
+            }
+          ],
+          "scène": "",
+          "children": [
+            
+          ]
+        }
+      ]
+    }
+  ]
+}

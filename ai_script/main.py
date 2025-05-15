@@ -7,6 +7,13 @@ import requests
 from pydantic import BaseModel
 from prompt_manager import initial_prompt, continuation_prompt, final_prompt
 from model import initialize_model, generate_text
+from pydantic import BaseModel
+from pathlib import Path
+import json
+import time
+from collections import Counter
+from typing import Dict, Any, Union
+from rpyScript.jsonParser_v2 import convert_json_tree_to_rpy
 
 app = FastAPI()
 session = None
@@ -200,3 +207,33 @@ async def add_node(request: AddNodeRequest):
 ############### ADDS A NODE BASED ON A PROMPT SENT BY FRONTEND WITH POST METHOD - INIT PROMPT
 
 ################################################################################
+
+# Request model
+class RenpyRequest(BaseModel):
+    data: Dict[str, Any]
+
+@app.get("/renpy")
+async def generate_rpy():
+    # Generate unique filename based on timestamp
+    global root_story
+    timestamp = int(time.time() * 1000)
+    json_filename = f"input_{timestamp}.json"
+    rpy_filename = f"output_{timestamp}.rpy"
+    print("before")
+    backend_path = Path("/backend/backend")
+    print("after")
+    # Paths for saved files
+    json_path = backend_path / json_filename
+    rpy_path = backend_path / rpy_filename
+
+    # Save raw JSON to file
+    json_path.write_text(json.dumps(StoryNode.tree_to_dict(root_story), indent=2), encoding="utf-8")
+
+    # Convert JSON file to rpy
+    convert_json_tree_to_rpy(json_path, rpy_path)
+
+    return {
+        "message": "Conversion successful",
+        "json_path": str(json_path.resolve()),
+        "rpy_path": str(rpy_path.resolve()),
+    }

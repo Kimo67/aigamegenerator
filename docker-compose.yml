@@ -46,13 +46,14 @@ services:
     ports:
       - "8050:8050"
     volumes:
-      - ./ai_script:/app
+      - ./backend:/backend/backend
     command: uvicorn main:app --host 0.0.0.0 --port 8050 --reload
     networks:
       - app-network
 
 volumes:
   postgres_data:
+  shared_data:
 
 networks:
   app-network:

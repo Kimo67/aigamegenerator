@@ -1,0 +1,42 @@
+[CHARACTERS]
+Eileen,#c8ffc8
+Bob,#ffc8ff
+Alice,#c8c8ff
+Charlie,#ffffc8
+
+[SCENE] bg_cafe
+
+[LABEL] start
+[SHOW] Eileen
+[DIALOGUE] Eileen: Welcome to the café!
+[SHOW] Bob
+[DIALOGUE] Bob: It's nice to hang out together.
+[SHOW] Alice
+[DIALOGUE] Alice: Yeah, it's been a while!
+[SHOW] Charlie
+[DIALOGUE] Charlie: I wasn't expecting to see everyone here!
+
+[MENU] What should we do?
+- Order coffee. -> coffee_scene
+- Chat for a while. -> chat_scene
+
+[LABEL] coffee_scene
+[SHOW] Eileen
+[DIALOGUE] Eileen: Let's order some coffee.
+[JUMP] after_choice
+
+[LABEL] chat_scene
+[SHOW] Bob
+[DIALOGUE] Bob: I’d love to catch up with everyone!
+[JUMP] after_choice
+
+[LABEL] after_choice
+[SHOW] Alice
+[DIALOGUE] Alice: This was a great idea!
+[SHOW] Charlie
+[DIALOGUE] Charlie: Yeah, we should do this more often.
+
+[LABEL] end
+[SCENE] bg_street
+[SHOW] Bob
+[DIALOGUE] Bob: Time to head home.
