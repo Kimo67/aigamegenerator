@@ -1,33 +1,71 @@
-<div class="Page_container bg-gradient-to-br from-green-600 to-emerald-400">
-  <button [routerLink]="['']">
+<div class="page_container bg-gradient-to-br from-green-600 to-emerald-400">
+  <button class="back-arrow-btn" [routerLink]="['']">
     <i class="bi bi-arrow-left"></i>
   </button>
+  
+  <!-- Particles background -->
   <div 
     *ngFor="let particle of particles"
-    class="absolute bg-white rounded-full opacity-50"
+    class="particle absolute bg-white rounded-full opacity-50"
     [ngStyle]="{
       'left': particle.x + '%',
       'top': particle.y + '%',
       'width': particle.size + 'px',
       'height': particle.size + 'px',
     }">
-</div>
-<div class="story-container" *ngIf="stories.length > 0; else noStories">
-<div class="story-card" *ngFor="let story of stories" (click)="selectStory(story.id)">
-  <h2>{{ story.name }}</h2>
-  <p>ID : {{ story.id }}</p>
-</div>
-</div>
+  </div>
 
-<ng-template #noStories>
-  <p class="empty">Aucune histoire à afficher.</p>
-</ng-template>
-
-<!-- Affichage dynamique du composant block -->
-<app-block *ngIf="selectedStoryId"
-[blocks]="storyBlocks"
-[storyId]="selectedStoryId"
-[personnages]="personnages">
-
-</app-block>
+  <div class="main-content">
+    <!-- Colonne gauche : liste des histoires -->
+    <div class="story-list-section">
+      <div class="story-header">
+        <div class="header-content">
+          <h3 class="section-title">Mes Histoires</h3>
+          <div class="stories-count">
+            <span>{{ stories.length }} histoires</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="story-container" *ngIf="stories.length > 0; else noStories">
+        <div class="story-card" *ngFor="let story of stories" (click)="selectStory(story.id)" [class.active]="selectedStoryId === story.id">
+          <div class="story-id-circle">
+            {{ story.id }}
+          </div>
+          <div class="story-info">
+            <h2>{{ story.name }}</h2>
+          </div>
+          <div class="story-arrow" *ngIf="selectedStoryId !== story.id">
+            <i class="bi bi-chevron-right"></i>
+          </div>
+          <div class="story-check" *ngIf="selectedStoryId === story.id">
+            <i class="bi bi-check-circle"></i>
+          </div>
+        </div>
+      </div>
+      
+      <ng-template #noStories>
+        <div class="empty-container">
+          <i class="bi bi-journal-x empty-icon"></i>
+          <p class="empty">Aucune histoire à afficher.</p>
+        </div>
+      </ng-template>
+    </div>
+    
+    <!-- Colonne droite : blocks -->
+    <div class="block-section">
+      <div class="block-placeholder" *ngIf="!selectedStoryId">
+        <div class="placeholder-content">
+          <i class="bi bi-arrow-left-circle"></i>
+          <p>Sélectionnez une histoire pour afficher ses détails</p>
+        </div>
+      </div>
+      <app-block *ngIf="selectedStoryId"
+        [blocks]="storyBlocks"
+        [storyId]="selectedStoryId"
+        [personnages]="personnages"
+        [showBackButton]="false">
+      </app-block>
+    </div>
+  </div>
 </div>

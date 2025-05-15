@@ -1,34 +1,306 @@
-.Page_container {
+.page_container {
   width: 100%;
-  height: 100vh; /* Full viewport height */
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Layout principal en deux colonnes */
+.main-content {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Colonne gauche : liste des histoires - ELARGIE (350px) */
+.story-list-section {
+  width: 350px;
+  min-width: 350px;
+  height: 100vh;
+  background: #00000024;
+  backdrop-filter: blur(10px);
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+  padding: 6rem 3rem 2rem 1rem;
+  box-sizing: border-box;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.story-header {
+  padding: 0 20px 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 16px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.stories-count {
+  display: inline-flex;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: white;
+}
+
+/* Colonne droite : blocks */
+.block-section {
+  flex: 1;
+}
+
+/* Liste des histoires en colonne */
+.story-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  padding: 0 16px;
+}
+
+/* Carte d'histoire */
+.story-card {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.story-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.story-card.active {
+  background-color: rgba(255, 255, 255, 0.9); // Augmente l'opacité ici
+  padding-left: 10px;
+}
+.story-card.active h2,
+.story-card.active i {
+  color: #16a34a !important;
+}
+
+.story-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.story-card:hover::after {
+  transform: translateX(100%);
+}
+
+/* ID Circle (remplacement de l'icône) */
+.story-id-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.story-card.active .story-id-circle {
+  background-color: #16a34a;
+  color: white;
+}
+
+.story-card:hover .story-id-circle {
+  transform: scale(1.1);
+}
+
+.story-info {
+  flex-grow: 1;
+}
+
+.story-card h2 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  color: white;
+  font-weight: 600;
+}
+
+.story-id-text {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+}
+
+.story-arrow {
+  color: white;
+  font-size: 1.2rem;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  margin-left: 8px;
+}
+
+.story-check {
+  color: white;
+  font-size: 1.2rem;
+  opacity: 1;
+  transition: all 0.3s ease;
+  margin-left: 8px;
+}
+
+.story-card:hover .story-arrow {
+  transform: translateX(4px);
+  opacity: 1;
+}
+
+/* État vide pour la liste d'histoires */
+.empty-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  position: relative;
+  padding: 30px 20px;
+  margin: 0 16px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
-/* Back arrow button styling */
+
+.empty-icon {
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.empty {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Placeholder pour la section de droite quand aucune histoire n'est sélectionnée */
+.block-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.placeholder-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.placeholder-content i {
+  font-size: 3rem;
+  color: white;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.placeholder-content p {
+  font-size: 1.2rem;
+  color: white;
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Animation des particules */
+.particle {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: float 15s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-15px) translateX(10px);
+  }
+  50% {
+    transform: translateY(0) translateX(20px);
+  }
+  75% {
+    transform: translateY(15px) translateX(10px);
+  }
+}
+
+/* Back arrow button styling - repositionné pour éviter le chevauchement */
 .back-arrow-btn {
   position: absolute;
   top: 20px;
   left: 20px;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.2);
   border: none;
   padding: 10px;
+  border-radius: 50%;
   z-index: 10;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .back-arrow-btn:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.back-arrow-btn:active {
+  transform: scale(0.95);
 }
 
 .back-arrow-btn i.bi-arrow-left {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .bg-gradient-to-br {
@@ -60,63 +332,48 @@
   opacity: 0.5;
 }
 
-.story-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
-  padding: 16px;
-  width: 100%;
-  max-width: 1200px;
-}
-
-.story-card {
-  background-color: rgba(255, 255, 255, 0.85);
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.story-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.story-card h2 {
-  margin: 0 0 8px;
-  font-size: 1.2em;
-  color: #333;
-}
-
-.story-card p {
-  margin: 0;
-  color: #555;
-}
-
-.empty {
-  text-align: center;
-  padding: 32px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 12px;
-  padding: 32px 48px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
+/* Media queries pour le responsive */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
   }
-  50% {
-    transform: scale(1.05);
-    opacity: 0.9;
+  
+  .story-list-section {
+    min-width: 350px;
+    height: auto;
+    max-height: 40vh;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 60px;
   }
-  100% {
-    transform: scale(1);
-    opacity: 1;
+  
+  .back-arrow-btn {
+    top: 10px;
+    left: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .story-card {
+    padding: 10px;
+  }
+  
+  .story-id-circle {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+    margin-right: 10px;
+  }
+  
+  .section-title {
+    font-size: 1.2rem;
+  }
+  
+  .story-card h2 {
+    font-size: 0.9rem;
+  }
+  
+  .story-list-section {
+    padding-top: 50px;
   }
 }
