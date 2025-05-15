@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Case, Character, Story } from './core/models/block.model';
@@ -18,5 +18,10 @@ export class ApiService {
 
   getStories(): Observable<Story[]> {
     return this.http.get<Story[]>(`${this.baseUrl}/stories`)
+  }
+
+  getCasesByStoryId(storyId: number): Observable<Case[]> {
+    const params = new HttpParams().set('story', storyId.toString());
+    return this.http.get<Case[]>(`${this.baseUrl}/case`, { params })
   }
 }
