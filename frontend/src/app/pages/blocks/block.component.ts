@@ -40,6 +40,7 @@ export class BlockComponent implements AfterViewInit, OnDestroy {
         id: 1,
         command: '',
         parentId: null,
+        parent:null,
         choices: [],
         repliques: [],
         position: { x: 50, y: 50 }
@@ -73,10 +74,9 @@ export class BlockComponent implements AfterViewInit, OnDestroy {
 
     const payload: Partial<Case> = {
       prompt,
-      parent: null,
+      parent: block.parentId,
       title: `Case ${this.nextId}`,
       story: this.storyId,
-      characters: ['MARIO', 'YOSHI']
     };
 
     try {
@@ -100,6 +100,16 @@ export class BlockComponent implements AfterViewInit, OnDestroy {
       block.choices.push(newChoice);
   
       block.command = '';
+      this.blocks.map((bloc) => {
+        if(bloc.id === block.id) {
+          bloc.id = result.id;
+          bloc.parent = result.parent;
+          bloc.prompt = result.prompt;
+          bloc.repliques = result.repliques;
+          bloc.characters = result.characters;
+          bloc.story = bloc.story;
+        }
+      });
     } catch (err) {
       console.error('Erreur lors de la création de la case', err);
     }
