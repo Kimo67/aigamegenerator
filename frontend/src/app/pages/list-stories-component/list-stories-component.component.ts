@@ -45,7 +45,7 @@ particles = Array.from({ length: 30 }, (_, i) => ({
     try {
       const blocks = await firstValueFrom(this.apiService.getCasesByStoryId(storyId));
       const personnages = await firstValueFrom(this.apiService.getCharacterList())
-      this.storyBlocks = blocks;
+      this.storyBlocks = blocks.filter((bloc) => bloc.story === storyId);
       this.personnages = personnages.map((character) => character.name);
     } catch (err) {
       console.error('Erreur lors de la récupération des blocs', err);

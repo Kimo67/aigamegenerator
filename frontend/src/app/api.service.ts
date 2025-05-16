@@ -32,6 +32,6 @@ export class ApiService {
   }
 
   exporterRenpy() : Observable<RenpyResponse> {
-    return this.http.get<RenpyResponse>(`${this.baseUrl}/renpy`);
+    return this.http.get<RenpyResponse>(`${this.baseUrl}/api/stories/renpy`);
   }
 }

@@ -25,7 +25,8 @@ class StoryViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], url_path='renpy')
     def custom_get(self, request):
         # Custom logic here (e.g. filtered queryset, stats, etc.)
-        ai_response = requests.post(
+        ai_response = requests.get(
             "http://ai-script-app:8050/renpy",
         )
+
         return Response(ai_response)
