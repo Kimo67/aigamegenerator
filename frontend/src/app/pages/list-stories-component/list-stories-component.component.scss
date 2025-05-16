@@ -20,6 +20,8 @@
 .story-list-section {
   width: 350px;
   min-width: 350px;
+  overflow-x: hidden;
+  overflow-y: auto;
   height: 100vh;
   background: #00000024;
   backdrop-filter: blur(10px);
@@ -146,16 +148,22 @@
   transform: scale(1.1);
 }
 
+/* Modification pour limiter la taille du titre et ajouter ellipse */
 .story-info {
-  flex-grow: 1;
-}
-
-.story-card h2 {
-  margin: 0 0 4px;
-  font-size: 1rem;
-  color: white;
-  font-weight: 600;
-}
+    flex-grow: 1;
+    max-width: 65%; /* Limite la largeur du bloc d'info */
+    overflow: hidden; /* Empêche le débordement */
+  }
+  
+  .story-card h2 {
+    margin: 0 0 4px;
+    font-size: 1rem;
+    color: white;
+    font-weight: 600;
+    white-space: nowrap; /* Empêche le retour à la ligne */
+    overflow: hidden; /* Cache le contenu qui dépasse */
+    text-overflow: ellipsis; /* Ajoute les points de suspension */
+  }
 
 .story-id-text {
   margin: 0;
